@@ -6,6 +6,9 @@ on:
       - main
       - develop
 
+permissions:
+  security-events: write
+
 jobs:
   lint:
     name: Run Android Lint
@@ -31,13 +34,13 @@ jobs:
         run: ./gradlew detekt
 
       - name: Upload SARIF report to GitHub
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: app/build/reports/lint-results-debug.sarif
           category: lint
 
       - name: Upload Detekt SARIF report
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: app/build/reports/detekt/detekt.sarif
           category: lint
