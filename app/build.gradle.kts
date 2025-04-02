@@ -1,5 +1,4 @@
 import com.adrifernandev.rickandmortypedia.buildsrc.Versions
-import io.gitlab.arturbosch.detekt.Detekt
 
 plugins {
     alias(libs.plugins.android.application)
