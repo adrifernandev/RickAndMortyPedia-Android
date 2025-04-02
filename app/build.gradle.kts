@@ -20,13 +20,30 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        getByName("debug")
+        create("release") {
+            storeFile = file("signing/rickAndMortyPediaKeystore")
+            storePassword = System.getenv("RAMP_ANDROID_KEYSTORE_PASSWORD")
+            keyAlias = System.getenv("RAMP_ANDROID_KEYSTORE_ALIAS")
+            keyPassword = System.getenv("RAMP_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD")
+        }
+    }
+
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        debug {
+            signingConfig = signingConfigs.getByName("debug")
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
         }
     }
     compileOptions {
