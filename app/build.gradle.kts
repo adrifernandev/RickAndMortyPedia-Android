@@ -8,6 +8,30 @@ plugins {
     alias(libs.plugins.com.google.devtools.ksp)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.detekt)
+    alias(libs.plugins.kover)
+}
+
+kover {
+    reports {
+        filters {
+            excludes {
+                annotatedBy("*Composable")
+                classes("*.ui.*")
+                classes("*.di.*")
+                classes("*Activity")
+                classes("*generated*")
+                classes("*ComposableSingletons*")
+            }
+        }
+        variant("debug") {
+            xml {
+                onCheck = true
+            }
+            html {
+                onCheck = true
+            }
+        }
+    }
 }
 
 android {
