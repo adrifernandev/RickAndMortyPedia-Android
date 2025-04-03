@@ -1,4 +1,5 @@
 import com.adrifernandev.rickandmortypedia.buildsrc.Modules.COMMON_DATA
+import com.adrifernandev.rickandmortypedia.buildsrc.Modules.FEATURE_CHARACTER_DOMAIN
 import com.adrifernandev.rickandmortypedia.buildsrc.Versions
 
 plugins {
@@ -48,4 +49,5 @@ dependencies {
 
     // Modules implementations //
     implementation(project(COMMON_DATA))
+    implementation(project(FEATURE_CHARACTER_DOMAIN))
 }
