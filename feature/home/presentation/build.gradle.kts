@@ -1,3 +1,4 @@
+import com.adrifernandev.rickandmortypedia.buildsrc.Modules.DESIGN_SYSTEM
 import com.adrifernandev.rickandmortypedia.buildsrc.Versions
 import java.lang.Runtime.Version
 
@@ -44,4 +45,7 @@ android {
 dependencies {
     implementation(libs.bundles.layer.presentation)
     implementation(platform(libs.androidx.compose.bom))
+
+    //Modules implementation
+    implementation(project(DESIGN_SYSTEM))
 }

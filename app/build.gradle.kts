@@ -1,3 +1,6 @@
+import com.adrifernandev.rickandmortypedia.buildsrc.Modules.COMMON_PRESENTATION
+import com.adrifernandev.rickandmortypedia.buildsrc.Modules.DESIGN_SYSTEM
+import com.adrifernandev.rickandmortypedia.buildsrc.Modules.FEATURE_HOME_PRESENTATION
 import com.adrifernandev.rickandmortypedia.buildsrc.Versions
 
 plugins {
@@ -102,12 +105,12 @@ dependencies {
     upload-sarif.yml, if not, it won't
     report about that module missing here
     to be fixed on #13 */
-    implementation(project(":designsystem"))
-    implementation(project(":common:presentation"))
-    implementation(project(":feature:home:presentation"))
+    implementation(project(DESIGN_SYSTEM))
+    implementation(project(COMMON_PRESENTATION))
+    implementation(project(FEATURE_HOME_PRESENTATION))
 
     // [Kover Implementations] //
-    kover(project(":designsystem"))
-    kover(project(":common:presentation"))
-    kover(project(":feature:home:presentation"))
+    kover(project(DESIGN_SYSTEM))
+    kover(project(COMMON_PRESENTATION))
+    kover(project(FEATURE_HOME_PRESENTATION))
 }
