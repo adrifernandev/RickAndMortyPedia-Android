@@ -23,3 +23,4 @@ rootProject.name = "RickAndMortyPedia"
 include(":app")
 include(":designsystem")
 include(":common:presentation")
+include(":feature:home:presentation")
