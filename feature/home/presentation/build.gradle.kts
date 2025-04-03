@@ -1,3 +1,4 @@
+import com.adrifernandev.rickandmortypedia.buildsrc.Modules.COMMON_PRESENTATION
 import com.adrifernandev.rickandmortypedia.buildsrc.Modules.DESIGN_SYSTEM
 import com.adrifernandev.rickandmortypedia.buildsrc.Versions
 import java.lang.Runtime.Version
@@ -48,4 +49,5 @@ dependencies {
 
     //Modules implementation
     implementation(project(DESIGN_SYSTEM))
+    implementation(project(COMMON_PRESENTATION))
 }
