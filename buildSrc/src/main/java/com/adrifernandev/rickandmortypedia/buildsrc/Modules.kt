@@ -5,10 +5,15 @@ object Modules {
     private const val FEATURE_MODULES = ":feature"
 
     private const val HOME_MODULES = ":home"
+    private const val CHARACTER_MODULES = ":character"
 
-    const val FEATURE_HOME_DATA = "$FEATURE_MODULES$HOME_MODULES:data"
-    const val FEATURE_HOME_PRESENTATION = "$FEATURE_MODULES$HOME_MODULES:presentation"
-    const val COMMON_PRESENTATION = "$COMMON_MODULES:presentation"
+    private const val LAYER_PRESENTATION = ":presentation"
+    private const val LAYER_DOMAIN = ":domain"
+    private const val LAYER_DATA = ":data"
+
+    const val FEATURE_CHARACTER_DATA = "$FEATURE_MODULES$CHARACTER_MODULES$LAYER_DATA"
+    const val FEATURE_HOME_PRESENTATION = "$FEATURE_MODULES$HOME_MODULES$LAYER_PRESENTATION"
+    const val COMMON_PRESENTATION = "$COMMON_MODULES$LAYER_PRESENTATION"
     const val DESIGN_SYSTEM = ":designsystem"
     const val APP = ":app"
 }

@@ -11,7 +11,7 @@ plugins {
 }
 
 android {
-    namespace = "${Versions.APPLICATION_ID}.feature.home.data"
+    namespace = "${Versions.APPLICATION_ID}.feature.character.data"
     compileSdk = Versions.COMPILE_SDK
 
     defaultConfig {
