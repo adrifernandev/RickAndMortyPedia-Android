@@ -26,6 +26,7 @@ gson = "2.11.0"
 detekt = "1.23.8"
 kover = "0.9.1"
 retrofit = "2.11.0"
+runtimeAndroid = "1.7.8"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -39,6 +40,7 @@ androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-runtime-android = { group = "androidx.compose.runtime", name = "runtime-android", version.ref = "runtimeAndroid" }
 
 androidx-arch-core-core-common = { module = "androidx.arch.core:core-common", version.ref = "androidxArch-core" }
 androidx-arch-core-core-runtime = { module = "androidx.arch.core:core-runtime", version.ref = "androidxArch-core" }
@@ -99,7 +101,9 @@ layer-presentation = [
 
 layer-domain = [
     "androidx-core-ktx",
-    "com-google-dagger-hilt-android"
+    "com-google-dagger-hilt-android",
+    "androidx-compose-bom",
+    "androidx-runtime-android"
 ]
 
 layer-data = [
