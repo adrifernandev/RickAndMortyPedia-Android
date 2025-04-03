@@ -1,9 +1,3 @@
-import com.adrifernandev.rickandmortypedia.buildsrc.Modules.APP
-import com.adrifernandev.rickandmortypedia.buildsrc.Modules.COMMON_PRESENTATION
-import com.adrifernandev.rickandmortypedia.buildsrc.Modules.DESIGN_SYSTEM
-import com.adrifernandev.rickandmortypedia.buildsrc.Modules.FEATURE_HOME_DATA
-import com.adrifernandev.rickandmortypedia.buildsrc.Modules.FEATURE_HOME_PRESENTATION
-
 pluginManagement {
     repositories {
         google {
@@ -26,8 +20,8 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "RickAndMortyPedia"
-include(APP)
-include(DESIGN_SYSTEM)
-include(COMMON_PRESENTATION)
-include(FEATURE_HOME_PRESENTATION)
-include(FEATURE_HOME_DATA)
+include(":app")
+include(":designsystem")
+include(":common:presentation")
+include(":feature:home:presentation")
+include(":feature:home:data")
