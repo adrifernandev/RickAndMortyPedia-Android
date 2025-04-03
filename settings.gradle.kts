@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "RickAndMortyPedia"
 include(":app")
+include(":designsystem")
