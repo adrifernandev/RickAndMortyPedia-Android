@@ -111,6 +111,12 @@ layer-data = [
     "com-squareup-retrofit2-retrofit",
     "com-squareup-retrofit2-converter-gson",
 ]
+layer-common-fundaments = [
+    "androidx-core-ktx",
+    "androidx-lifecycle-runtime-ktx",
+    "com-google-dagger-hilt-android",
+    "kotlinx-serialization-json",
+]
 
 compilers-ksp-generic = [
     "com-google-dagger-hilt-android-compiler",
