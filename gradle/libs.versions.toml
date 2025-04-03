@@ -25,6 +25,8 @@ turbine = "1.1.0"
 gson = "2.11.0"
 detekt = "1.23.8"
 kover = "0.9.1"
+retrofit = "2.11.0"
+runtimeAndroid = "1.7.8"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -38,6 +40,7 @@ androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-runtime-android = { group = "androidx.compose.runtime", name = "runtime-android", version.ref = "runtimeAndroid" }
 
 androidx-arch-core-core-common = { module = "androidx.arch.core:core-common", version.ref = "androidxArch-core" }
 androidx-arch-core-core-runtime = { module = "androidx.arch.core:core-runtime", version.ref = "androidxArch-core" }
@@ -65,6 +68,9 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 com-google-code-gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 
+com-squareup-retrofit2-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+com-squareup-retrofit2-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
@@ -90,12 +96,15 @@ layer-presentation = [
     "androidx-navigation-compose",
     "kotlinx-serialization-json",
     "com-google-dagger-hilt-android",
-    "com-google-dagger-hilt-compose"
+    "com-google-dagger-hilt-compose",
+    "androidx-runtime-android"
 ]
 
 layer-domain = [
     "androidx-core-ktx",
-    "com-google-dagger-hilt-android"
+    "com-google-dagger-hilt-android",
+    "androidx-compose-bom",
+    "androidx-runtime-android"
 ]
 
 layer-data = [
@@ -104,6 +113,14 @@ layer-data = [
     "kotlinx-serialization-json",
     "com-google-dagger-hilt-android",
     "com-google-code-gson",
+    "com-squareup-retrofit2-retrofit",
+    "com-squareup-retrofit2-converter-gson",
+]
+layer-common-fundaments = [
+    "androidx-core-ktx",
+    "androidx-lifecycle-runtime-ktx",
+    "com-google-dagger-hilt-android",
+    "kotlinx-serialization-json",
 ]
 
 compilers-ksp-generic = [
@@ -111,6 +128,10 @@ compilers-ksp-generic = [
 ]
 
 compilers-ksp-data = [
+    "com-google-dagger-hilt-android-compiler",
+]
+
+compilers-ksp-domain = [
     "com-google-dagger-hilt-android-compiler",
 ]
 
