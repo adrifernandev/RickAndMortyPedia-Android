@@ -12,7 +12,7 @@ class GetAllCharactersUseCase @Inject constructor(
     operator fun invoke(): Flow<Result<List<Character>?>> =
         characterRepository.getAllCharacters().map { result ->
             result.mapCatching { characters ->
-                characters?.sortedBy { it.name }
+                characters?.sortedBy { it.id }
             }
         }
 }
