@@ -1,5 +1,7 @@
 package com.adrifernandev.rickandmortypedia.feature.character.data.di
 
+import com.adrifernandev.rickandmortypedia.feature.character.data.source.remote.datasource.CharacterRemoteDataSource
+import com.adrifernandev.rickandmortypedia.feature.character.data.source.remote.datasource.CharacterRemoteDataSourceImpl
 import com.adrifernandev.rickandmortypedia.feature.character.data.source.remote.service.CharacterService
 import dagger.Module
 import dagger.Provides
@@ -18,5 +20,13 @@ object CharacterDataModule {
         retrofit: Retrofit
     ): CharacterService {
         return retrofit.create(CharacterService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCharacterRemoteDataSource(
+        characterService: CharacterService
+    ): CharacterRemoteDataSource {
+        return CharacterRemoteDataSourceImpl(characterService)
     }
 }

@@ -1,5 +1,6 @@
 import com.adrifernandev.rickandmortypedia.buildsrc.Modules.COMMON_DATA
 import com.adrifernandev.rickandmortypedia.buildsrc.Modules.COMMON_DI
+import com.adrifernandev.rickandmortypedia.buildsrc.Modules.COMMON_FUNDAMENTS
 import com.adrifernandev.rickandmortypedia.buildsrc.Modules.COMMON_PRESENTATION
 import com.adrifernandev.rickandmortypedia.buildsrc.Modules.DESIGN_SYSTEM
 import com.adrifernandev.rickandmortypedia.buildsrc.Modules.FEATURE_CHARACTER_DATA
@@ -113,6 +114,7 @@ dependencies {
     implementation(project(FEATURE_HOME_PRESENTATION))
     implementation(project(FEATURE_CHARACTER_DATA))
     implementation(project(COMMON_DATA))
+    implementation(project(COMMON_FUNDAMENTS))
 
     // [DI Module implementation needed] //
     implementation(project(COMMON_DI))
@@ -124,4 +126,5 @@ dependencies {
     kover(project(FEATURE_CHARACTER_DATA))
     kover(project(COMMON_DATA))
     kover(project(COMMON_DI))
+    kover(project(COMMON_FUNDAMENTS))
 }

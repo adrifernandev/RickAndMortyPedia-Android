@@ -1,3 +1,4 @@
+import com.adrifernandev.rickandmortypedia.buildsrc.Modules.COMMON_DATA
 import com.adrifernandev.rickandmortypedia.buildsrc.Versions
 
 plugins {
@@ -44,4 +45,7 @@ dependencies {
     ksp(libs.bundles.compilers.ksp.data)
 
     testImplementation(libs.bundles.testing.unit)
+
+    // Modules implementations //
+    implementation(project(COMMON_DATA))
 }
