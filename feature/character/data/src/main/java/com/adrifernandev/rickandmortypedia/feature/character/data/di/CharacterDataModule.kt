@@ -17,6 +17,6 @@ object CharacterDataModule {
     fun provideCharacterService(
         retrofit: Retrofit
     ): CharacterService {
-        retrofit.create(CharacterService::class.java)
+        return retrofit.create(CharacterService::class.java)
     }
 }
