@@ -2,7 +2,7 @@ package com.adrifernandev.rickandmortypedia.feature.character.data.source.remote
 
 import com.adrifernandev.rickandmortypedia.feature.character.data.source.remote.entity.response.CharacterResponse
 import retrofit2.Response
-import retrofit2.http.POST
+import retrofit2.http.GET
 
 interface CharacterService {
 
@@ -10,6 +10,6 @@ interface CharacterService {
         private const val CHARACTER_PATH = "character"
     }
 
-    @POST(CHARACTER_PATH)
+    @GET(CHARACTER_PATH)
     suspend fun getAllCharacters(): Response<CharacterResponse?>
 }
