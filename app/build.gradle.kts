@@ -104,4 +104,10 @@ dependencies {
     to be fixed on #13 */
     implementation(project(":designsystem"))
     implementation(project(":common:presentation"))
+    implementation(project(":feature:home:presentation"))
+
+    // [Kover Implementations] //
+    kover(project(":designsystem"))
+    kover(project(":common:presentation"))
+    kover(project(":feature:home:presentation"))
 }
