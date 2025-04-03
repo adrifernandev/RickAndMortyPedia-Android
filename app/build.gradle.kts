@@ -101,6 +101,6 @@ dependencies {
     /* This is needed because of
     upload-sarif.yml, if not, it won't
     report about that module missing here
-    to be fixed [
-     */
+    to be fixed on #13 */
+    implementation(project(":designsystem"))
 }
