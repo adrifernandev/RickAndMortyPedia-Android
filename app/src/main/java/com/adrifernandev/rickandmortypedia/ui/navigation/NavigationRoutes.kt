@@ -8,5 +8,6 @@ sealed class NavigationRoutes {
     @Serializable
     data object HomeGraph : NavigationRoutes()
 
+    @Serializable
     data object Home : NavigationRoutes()
 }
