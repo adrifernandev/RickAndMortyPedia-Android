@@ -103,4 +103,5 @@ dependencies {
     report about that module missing here
     to be fixed on #13 */
     implementation(project(":designsystem"))
+    implementation(project(":common:presentation"))
 }
