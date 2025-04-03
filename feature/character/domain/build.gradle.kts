@@ -3,6 +3,9 @@ import com.adrifernandev.rickandmortypedia.buildsrc.Versions
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.com.google.devtools.ksp)
+    alias(libs.plugins.com.google.dagger.hilt.android)
     alias(libs.plugins.detekt)
     alias(libs.plugins.kover)
 }
@@ -41,6 +44,7 @@ android {
 
 dependencies {
     implementation(libs.bundles.layer.domain)
+    ksp(libs.bundles.compilers.ksp.domain)
 
     testImplementation(libs.bundles.testing.unit)
 

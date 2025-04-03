@@ -2,6 +2,7 @@ import com.adrifernandev.rickandmortypedia.buildsrc.Modules.COMMON_DATA
 import com.adrifernandev.rickandmortypedia.buildsrc.Modules.COMMON_PRESENTATION
 import com.adrifernandev.rickandmortypedia.buildsrc.Modules.DESIGN_SYSTEM
 import com.adrifernandev.rickandmortypedia.buildsrc.Modules.FEATURE_CHARACTER_DATA
+import com.adrifernandev.rickandmortypedia.buildsrc.Modules.FEATURE_CHARACTER_DOMAIN
 import com.adrifernandev.rickandmortypedia.buildsrc.Modules.FEATURE_HOME_PRESENTATION
 import com.adrifernandev.rickandmortypedia.buildsrc.Versions
 
@@ -46,5 +47,6 @@ dependencies {
     implementation(project(COMMON_PRESENTATION))
     implementation(project(FEATURE_HOME_PRESENTATION))
     implementation(project(FEATURE_CHARACTER_DATA))
+    implementation(project(FEATURE_CHARACTER_DOMAIN))
     implementation(project(COMMON_DATA))
 }

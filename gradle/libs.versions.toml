@@ -96,7 +96,8 @@ layer-presentation = [
     "androidx-navigation-compose",
     "kotlinx-serialization-json",
     "com-google-dagger-hilt-android",
-    "com-google-dagger-hilt-compose"
+    "com-google-dagger-hilt-compose",
+    "androidx-runtime-android"
 ]
 
 layer-domain = [
@@ -127,6 +128,10 @@ compilers-ksp-generic = [
 ]
 
 compilers-ksp-data = [
+    "com-google-dagger-hilt-android-compiler",
+]
+
+compilers-ksp-domain = [
     "com-google-dagger-hilt-android-compiler",
 ]
 

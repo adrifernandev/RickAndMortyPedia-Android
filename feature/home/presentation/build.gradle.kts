@@ -1,12 +1,14 @@
 import com.adrifernandev.rickandmortypedia.buildsrc.Modules.COMMON_PRESENTATION
 import com.adrifernandev.rickandmortypedia.buildsrc.Modules.DESIGN_SYSTEM
+import com.adrifernandev.rickandmortypedia.buildsrc.Modules.FEATURE_CHARACTER_DOMAIN
 import com.adrifernandev.rickandmortypedia.buildsrc.Versions
-import java.lang.Runtime.Version
 
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.com.google.devtools.ksp)
+    alias(libs.plugins.com.google.dagger.hilt.android)
     alias(libs.plugins.detekt)
     alias(libs.plugins.kover)
 }
@@ -46,8 +48,10 @@ android {
 dependencies {
     implementation(libs.bundles.layer.presentation)
     implementation(platform(libs.androidx.compose.bom))
+    ksp(libs.bundles.compilers.ksp.generic)
 
     //Modules implementation
     implementation(project(DESIGN_SYSTEM))
     implementation(project(COMMON_PRESENTATION))
+    implementation(project(FEATURE_CHARACTER_DOMAIN))
 }

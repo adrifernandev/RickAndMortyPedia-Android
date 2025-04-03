@@ -7,7 +7,7 @@ import retrofit2.http.POST
 interface CharacterService {
 
     companion object {
-        private const val CHARACTER_PATH = "/character"
+        private const val CHARACTER_PATH = "character"
     }
 
     @POST(CHARACTER_PATH)
