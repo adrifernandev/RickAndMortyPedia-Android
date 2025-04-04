@@ -11,12 +11,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,61 +44,78 @@ fun HomeScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
     HomeContent(
         modifier = modifier.fillMaxSize(),
-        state = state
+        state = state,
+        loadNextCharacterPage = {
+            viewModel.onEvent(HomeViewModel.UIEvent.LoadNextCharacterPage)
+        }
     )
 }
 
 @Composable
 private fun HomeContent(
     modifier: Modifier = Modifier,
-    state: HomeViewModel.UIState
+    state: HomeViewModel.UIState,
+    loadNextCharacterPage: () -> Unit
 ) {
+    val gridState = rememberLazyGridState()
+
     LazyVerticalGrid(
         modifier = modifier,
+        state = gridState,
         columns = GridCells.Adaptive(minSize = 128.dp),
         contentPadding = PaddingValues(DSTheme.spacing.large),
         horizontalArrangement = Arrangement.spacedBy(DSTheme.spacing.large),
         verticalArrangement = Arrangement.spacedBy(DSTheme.spacing.large)
     ) {
-        state.characters?.let { characters ->
-            itemsIndexed(characters) { _, character ->
-                ElevatedCard(
-                    modifier = Modifier
-                        .height(180.dp)
-                        .fillMaxWidth(),
-                    elevation = CardDefaults.elevatedCardElevation(
-                        defaultElevation = DSTheme.elevations.level3,
-                        pressedElevation = 0.dp
-                    )
-                ) {
-                    Box {
-                        DSAsyncImage(
-                            modifier = Modifier.fillMaxSize(),
-                            imageUrl = character.image,
-                            contentDescription = stringResource(
-                                id = R.string.avatar_image_description,
-                                character.name
-                            )
+        itemsIndexed(state.charactersList) { _, character ->
+            ElevatedCard(
+                modifier = Modifier
+                    .height(180.dp)
+                    .fillMaxWidth(),
+                elevation = CardDefaults.elevatedCardElevation(
+                    defaultElevation = DSTheme.elevations.level3,
+                    pressedElevation = 0.dp
+                )
+            ) {
+                Box {
+                    DSAsyncImage(
+                        modifier = Modifier.fillMaxSize(),
+                        imageUrl = character.image,
+                        contentDescription = stringResource(
+                            id = R.string.avatar_image_description,
+                            character.name
                         )
-                        DSVerticalGradient(endY = 400f)
-                        Row(modifier = Modifier.align(Alignment.TopStart)) {
-                            CharacterStatusIndicatorComponent(status = character.status)
-                        }
-                        Row(modifier = Modifier.align(Alignment.BottomStart)) {
-                            Text(
-                                modifier = Modifier.padding(DSTheme.spacing.medium),
-                                text = character.name,
-                                style = MaterialTheme.typography.headlineSmall,
-                                maxLines = 2,
-                                color = Color.White,
-                                overflow = TextOverflow.Ellipsis,
-                                textAlign = TextAlign.Start
-                            )
-                        }
+                    )
+                    DSVerticalGradient(endY = 400f)
+                    Row(modifier = Modifier.align(Alignment.TopStart)) {
+                        CharacterStatusIndicatorComponent(status = character.status)
+                    }
+                    Row(modifier = Modifier.align(Alignment.BottomStart)) {
+                        Text(
+                            modifier = Modifier.padding(DSTheme.spacing.medium),
+                            text = character.name,
+                            style = MaterialTheme.typography.headlineSmall,
+                            maxLines = 2,
+                            color = Color.White,
+                            overflow = TextOverflow.Ellipsis,
+                            textAlign = TextAlign.Start
+                        )
                     }
                 }
             }
         }
+    }
+
+    LaunchedEffect(gridState) {
+        snapshotFlow { gridState.layoutInfo.visibleItemsInfo }
+            .collect { visibleItems ->
+                if (visibleItems.isNotEmpty()) {
+                    val lastItem = visibleItems.last()
+                    if (lastItem.index >= state.charactersList.size - 5) {
+                        loadNextCharacterPage()
+                    }
+                }
+            }
     }
 }
 
@@ -104,9 +124,9 @@ private fun HomeContent(
 private fun HomeContentPreview() {
     DSTheme {
         HomeContent(
-            state = HomeViewModel.UIState(
-                characters = null
-            )
-        )
+            state = HomeViewModel.UIState()
+        ) {
+
+        }
     }
 }

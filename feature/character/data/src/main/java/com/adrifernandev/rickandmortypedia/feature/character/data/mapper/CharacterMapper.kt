@@ -1,15 +1,30 @@
-package com.adrifernandev.rickandmortypedia.feature.character.domain.mapper
+package com.adrifernandev.rickandmortypedia.feature.character.data.mapper
 
 import com.adrifernandev.rickandmortypedia.feature.character.data.source.remote.entity.response.CharacterItemResponse
 import com.adrifernandev.rickandmortypedia.feature.character.data.source.remote.entity.response.CharacterResponse
+import com.adrifernandev.rickandmortypedia.feature.character.data.source.remote.entity.response.InfoResponse
 import com.adrifernandev.rickandmortypedia.feature.character.data.source.remote.entity.response.LocationResponse
 import com.adrifernandev.rickandmortypedia.feature.character.domain.model.Character
 import com.adrifernandev.rickandmortypedia.feature.character.domain.model.CharacterGender
 import com.adrifernandev.rickandmortypedia.feature.character.domain.model.CharacterLocation
 import com.adrifernandev.rickandmortypedia.feature.character.domain.model.CharacterStatus
+import com.adrifernandev.rickandmortypedia.feature.character.domain.model.InfoModel
+import com.adrifernandev.rickandmortypedia.feature.character.domain.model.PagedCharacters
 
-fun CharacterResponse.toDomainModel(): List<Character> {
-    return results.map { it.toDomainModel() }
+fun CharacterResponse.toDomainModel(): PagedCharacters {
+    return PagedCharacters(
+        info = info.toDomainModel(),
+        results = results.map { it.toDomainModel() }
+    )
+}
+
+fun InfoResponse.toDomainModel(): InfoModel {
+    return InfoModel(
+        count = count,
+        pages = pages,
+        next = next,
+        prev = prev
+    )
 }
 
 fun CharacterItemResponse.toDomainModel(): Character {

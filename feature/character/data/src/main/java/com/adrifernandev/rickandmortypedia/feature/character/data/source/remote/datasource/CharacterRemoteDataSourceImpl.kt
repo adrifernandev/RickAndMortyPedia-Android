@@ -10,8 +10,8 @@ class CharacterRemoteDataSourceImpl @Inject constructor(
     private val characterService: CharacterService
 ) : CharacterRemoteDataSource {
 
-    override fun getAllCharacters(): Flow<Result<CharacterResponse?>> =
+    override fun getCharacters(page: Int): Flow<Result<CharacterResponse?>> =
         apiRequestFlow(
-            call = { characterService.getAllCharacters() },
+            call = { characterService.getCharacters(page) },
         )
 }

@@ -4,7 +4,6 @@ import com.adrifernandev.rickandmortypedia.feature.character.data.source.remote.
 import com.adrifernandev.rickandmortypedia.feature.character.data.source.remote.entity.response.CharacterResponse
 import com.adrifernandev.rickandmortypedia.feature.character.data.source.remote.entity.response.InfoResponse
 import com.adrifernandev.rickandmortypedia.feature.character.data.source.remote.entity.response.LocationResponse
-import com.adrifernandev.rickandmortypedia.feature.character.domain.mapper.toDomainModel
 import com.adrifernandev.rickandmortypedia.feature.character.domain.model.Character
 import com.adrifernandev.rickandmortypedia.feature.character.domain.model.CharacterGender
 import com.adrifernandev.rickandmortypedia.feature.character.domain.model.CharacterLocation

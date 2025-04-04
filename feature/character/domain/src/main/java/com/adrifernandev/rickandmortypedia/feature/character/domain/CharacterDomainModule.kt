@@ -14,7 +14,7 @@ object CharacterDomainModule {
 
     @Provides
     @Singleton
-    fun provideGetAllCharactersUseCase(
+    fun provideGetPaginatedCharactersUseCase(
         charactersRepository: CharacterRepository
     ): GetPaginatedCharactersUseCase {
         return GetPaginatedCharactersUseCase(charactersRepository)
