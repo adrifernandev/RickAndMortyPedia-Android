@@ -12,8 +12,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    getAllCharactersUseCase: GetAllCharactersUseCase
+    private val getAllCharactersUseCase: GetAllCharactersUseCase
 ) : ViewModel() {
+
+    init {
+        getAllCharacters()
+    }
 
     data class UIState(
         val characters: List<Character>? = null,
@@ -23,11 +27,11 @@ class HomeViewModel @Inject constructor(
         MutableStateFlow(UIState())
     val state = _state.asStateFlow()
 
-    init {
+    private fun getAllCharacters() {
         viewModelScope.launch {
             getAllCharactersUseCase.invoke().collect { result ->
                 result.onSuccess { characters ->
-                    _state.value = state.value.copy(
+                    _state.value = _state.value.copy(
                         characters = characters
                     )
                 }
