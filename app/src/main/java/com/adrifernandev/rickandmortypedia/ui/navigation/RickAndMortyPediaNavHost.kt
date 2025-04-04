@@ -1,6 +1,6 @@
 package com.adrifernandev.rickandmortypedia.ui.navigation
 
-import androidx.compose.foundation.layout.padding
+import android.annotation.SuppressLint
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -13,6 +13,7 @@ import androidx.navigation.compose.navigation
 import com.adrifernandev.rickandmortypedia.feature.home.presentation.ui.HomeScreen
 import com.adrifernandev.rickandmortypedia.feature.home.presentation.viewmodel.HomeViewModel
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun RickAndMortyPediaNavHost(
     modifier: Modifier = Modifier,
@@ -22,9 +23,9 @@ fun RickAndMortyPediaNavHost(
     Scaffold(
         modifier = modifier,
         containerColor = MaterialTheme.colorScheme.background
-    ) { contentPadding ->
+    ) { _ ->
         NavHost(
-            modifier = Modifier.padding(contentPadding),
+            modifier = Modifier,
             navController = navHostController,
             startDestination = NavigationRoutes.HomeGraph
         ) {
