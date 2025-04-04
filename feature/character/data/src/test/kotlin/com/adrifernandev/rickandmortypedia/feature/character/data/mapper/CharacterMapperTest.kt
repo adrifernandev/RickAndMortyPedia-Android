@@ -8,13 +8,15 @@ import com.adrifernandev.rickandmortypedia.feature.character.domain.model.Charac
 import com.adrifernandev.rickandmortypedia.feature.character.domain.model.CharacterGender
 import com.adrifernandev.rickandmortypedia.feature.character.domain.model.CharacterLocation
 import com.adrifernandev.rickandmortypedia.feature.character.domain.model.CharacterStatus
+import com.adrifernandev.rickandmortypedia.feature.character.domain.model.InfoModel
+import com.adrifernandev.rickandmortypedia.feature.character.domain.model.PagedCharacters
 import org.junit.Test
 import kotlin.test.assertEquals
 
 class CharacterMapperTest {
 
     @Test
-    fun `toDomainModel should map CharacterResponse to list of Character correctly`() {
+    fun `toDomainModel should map CharacterResponse to PagedCharacter correctly`() {
         // Given
         val characterResponse = CharacterResponse(
             info = InfoResponse(
@@ -46,8 +48,7 @@ class CharacterMapperTest {
                 )
             )
         )
-
-        val expected = listOf(
+        val characterList = listOf(
             Character(
                 id = 1,
                 name = "Rick Sanchez",
@@ -69,11 +70,23 @@ class CharacterMapperTest {
             )
         )
 
+        val pagedCharacters = PagedCharacters(
+            info = InfoModel(
+                count = 1,
+                pages = 1,
+                next = null,
+                prev = null
+            ),
+            results = characterList
+        )
+
+
+
         // When
         val result = characterResponse.toDomainModel()
 
         // Then
-        assertEquals(result, expected)
+        assertEquals(result, pagedCharacters)
 
     }
 }

@@ -10,6 +10,8 @@ import com.adrifernandev.rickandmortypedia.feature.character.domain.model.Charac
 import com.adrifernandev.rickandmortypedia.feature.character.domain.model.CharacterGender
 import com.adrifernandev.rickandmortypedia.feature.character.domain.model.CharacterLocation
 import com.adrifernandev.rickandmortypedia.feature.character.domain.model.CharacterStatus
+import com.adrifernandev.rickandmortypedia.feature.character.domain.model.InfoModel
+import com.adrifernandev.rickandmortypedia.feature.character.domain.model.PagedCharacters
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
@@ -53,7 +55,7 @@ class CharacterRepositoryImplTest {
             )
         )
 
-        val mockDomainModel = listOf(
+        val characterList = listOf(
             Character(
                 id = 1,
                 name = "Rick Sanchez",
@@ -75,17 +77,27 @@ class CharacterRepositoryImplTest {
             )
         )
 
-        coEvery { characterFactory.remoteDataStore.getAllCharacters() } returns flowOf(
+        val expectedPagedModel = PagedCharacters(
+            info = InfoModel(
+                count = 1,
+                pages = 1,
+                next = null,
+                prev = null
+            ),
+            results = characterList
+        )
+
+        coEvery { characterFactory.remoteDataStore.getCharacters(1) } returns flowOf(
             Result.success(
                 mockResponse
             )
         )
 
         // When
-        characterRepository.getAllCharacters().test {
+        characterRepository.getCharacters(1).test {
             val result = awaitItem()
             assert(result.isSuccess)
-            assertEquals(mockDomainModel, result.getOrNull())
+            assertEquals(expectedPagedModel, result.getOrNull())
             cancelAndIgnoreRemainingEvents()
         }
     }
