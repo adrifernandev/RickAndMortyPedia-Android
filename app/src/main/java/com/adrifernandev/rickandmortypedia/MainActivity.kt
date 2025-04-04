@@ -6,6 +6,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import coil3.compose.setSingletonImageLoaderFactory
+import com.adrifernandev.rickandmortypedia.common.presentation.ui.images.provideImageLoader
 import com.adrifernandev.rickandmortypedia.designsystem.theme.DSTheme
 import com.adrifernandev.rickandmortypedia.ui.navigation.RickAndMortyPediaApp
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,6 +29,10 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             DSTheme {
+                setSingletonImageLoaderFactory { context ->
+                    provideImageLoader(context)
+                }
+
                 RickAndMortyPediaApp()
             }
         }
