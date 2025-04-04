@@ -101,7 +101,9 @@ layer-presentation = [
     "kotlinx-serialization-json",
     "com-google-dagger-hilt-android",
     "com-google-dagger-hilt-compose",
-    "androidx-runtime-android"
+    "androidx-runtime-android",
+    "io-coil-compose",
+    "io-coil-network"
 ]
 
 layer-domain = [
@@ -109,10 +111,6 @@ layer-domain = [
     "com-google-dagger-hilt-android",
     "androidx-compose-bom",
     "androidx-runtime-android"
-]
-presentation-home = [
-    "io-coil-compose",
-    "io-coil-network"
 ]
 
 layer-data = [
