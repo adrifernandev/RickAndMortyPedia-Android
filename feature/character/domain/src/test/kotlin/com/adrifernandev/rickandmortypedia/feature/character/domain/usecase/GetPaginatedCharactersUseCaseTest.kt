@@ -13,10 +13,10 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class GetAllCharactersUseCaseTest {
+class GetPaginatedCharactersUseCaseTest {
 
     private val characterRepository: CharacterRepository = mockk()
-    private val getAllCharactersUseCase = GetAllCharactersUseCase(characterRepository)
+    private val getPaginatedCharactersUseCase = GetPaginatedCharactersUseCase(characterRepository)
 
     @Test
     fun `invoke should return characters sorted by id`() = runBlocking {
@@ -65,7 +65,7 @@ class GetAllCharactersUseCaseTest {
         coEvery { characterRepository.getAllCharacters() } returns flowOf(Result.success(characters))
 
         // When
-        val result = getAllCharactersUseCase.invoke()
+        val result = getPaginatedCharactersUseCase.invoke()
 
         // Then
         result.test {

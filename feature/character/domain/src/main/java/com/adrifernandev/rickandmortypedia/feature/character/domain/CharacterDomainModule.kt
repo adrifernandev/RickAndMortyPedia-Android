@@ -1,7 +1,7 @@
 package com.adrifernandev.rickandmortypedia.feature.character.domain
 
 import com.adrifernandev.rickandmortypedia.feature.character.domain.repository.CharacterRepository
-import com.adrifernandev.rickandmortypedia.feature.character.domain.usecase.GetAllCharactersUseCase
+import com.adrifernandev.rickandmortypedia.feature.character.domain.usecase.GetPaginatedCharactersUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,7 +16,7 @@ object CharacterDomainModule {
     @Singleton
     fun provideGetAllCharactersUseCase(
         charactersRepository: CharacterRepository
-    ): GetAllCharactersUseCase {
-        return GetAllCharactersUseCase(charactersRepository)
+    ): GetPaginatedCharactersUseCase {
+        return GetPaginatedCharactersUseCase(charactersRepository)
     }
 }

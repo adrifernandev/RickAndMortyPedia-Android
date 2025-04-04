@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class GetAllCharactersUseCase @Inject constructor(
+class GetPaginatedCharactersUseCase @Inject constructor(
     private val characterRepository: CharacterRepository
 ) {
     operator fun invoke(): Flow<Result<List<Character>?>> =
