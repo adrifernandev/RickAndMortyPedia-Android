@@ -1,13 +1,36 @@
 package com.adrifernandev.rickandmortypedia.feature.home.presentation.ui
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.adrifernandev.rickandmortypedia.common.presentation.ui.previews.PhonePreviews
+import com.adrifernandev.rickandmortypedia.designsystem.components.image.DSAsyncImage
+import com.adrifernandev.rickandmortypedia.designsystem.components.image.DSVerticalGradient
 import com.adrifernandev.rickandmortypedia.designsystem.theme.DSTheme
+import com.adrifernandev.rickandmortypedia.feature.home.presentation.R
+import com.adrifernandev.rickandmortypedia.feature.home.presentation.ui.components.CharacterStatusIndicatorComponent
 import com.adrifernandev.rickandmortypedia.feature.home.presentation.viewmodel.HomeViewModel
 
 @Composable
@@ -27,7 +50,53 @@ private fun HomeContent(
     modifier: Modifier = Modifier,
     state: HomeViewModel.UIState
 ) {
-    Text("Hello world! I'm home screen! ${state.characters?.first()?.name}")
+    LazyVerticalGrid(
+        modifier = modifier,
+        columns = GridCells.Adaptive(minSize = 128.dp),
+        contentPadding = PaddingValues(DSTheme.spacing.large),
+        horizontalArrangement = Arrangement.spacedBy(DSTheme.spacing.large),
+        verticalArrangement = Arrangement.spacedBy(DSTheme.spacing.large)
+    ) {
+        state.characters?.let { characters ->
+            itemsIndexed(characters) { _, character ->
+                ElevatedCard(
+                    modifier = Modifier
+                        .height(180.dp)
+                        .fillMaxWidth(),
+                    elevation = CardDefaults.elevatedCardElevation(
+                        defaultElevation = DSTheme.elevations.level3,
+                        pressedElevation = 0.dp
+                    )
+                ) {
+                    Box {
+                        DSAsyncImage(
+                            modifier = Modifier.fillMaxSize(),
+                            imageUrl = character.image,
+                            contentDescription = stringResource(
+                                id = R.string.avatar_image_description,
+                                character.name
+                            )
+                        )
+                        DSVerticalGradient(endY = 400f)
+                        Row(modifier = Modifier.align(Alignment.TopStart)) {
+                            CharacterStatusIndicatorComponent(status = character.status)
+                        }
+                        Row(modifier = Modifier.align(Alignment.BottomStart)) {
+                            Text(
+                                modifier = Modifier.padding(DSTheme.spacing.medium),
+                                text = character.name,
+                                style = MaterialTheme.typography.headlineSmall,
+                                maxLines = 2,
+                                color = Color.White,
+                                overflow = TextOverflow.Ellipsis,
+                                textAlign = TextAlign.Start
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 @PhonePreviews
