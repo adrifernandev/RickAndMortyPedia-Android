@@ -47,6 +47,7 @@ android {
 
 dependencies {
     implementation(libs.bundles.layer.presentation)
+    implementation(libs.bundles.presentation.home)
     implementation(platform(libs.androidx.compose.bom))
     ksp(libs.bundles.compilers.ksp.generic)
 
