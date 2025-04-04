@@ -5,6 +5,8 @@ import com.adrifernandev.rickandmortypedia.feature.character.domain.model.Charac
 import com.adrifernandev.rickandmortypedia.feature.character.domain.model.CharacterGender
 import com.adrifernandev.rickandmortypedia.feature.character.domain.model.CharacterLocation
 import com.adrifernandev.rickandmortypedia.feature.character.domain.model.CharacterStatus
+import com.adrifernandev.rickandmortypedia.feature.character.domain.model.InfoModel
+import com.adrifernandev.rickandmortypedia.feature.character.domain.model.PagedCharacters
 import com.adrifernandev.rickandmortypedia.feature.character.domain.repository.CharacterRepository
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -13,10 +15,10 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class GetAllCharactersUseCaseTest {
+class GetPaginatedCharactersUseCaseTest {
 
     private val characterRepository: CharacterRepository = mockk()
-    private val getAllCharactersUseCase = GetAllCharactersUseCase(characterRepository)
+    private val getPaginatedCharactersUseCase = GetPaginatedCharactersUseCase(characterRepository)
 
     @Test
     fun `invoke should return characters sorted by id`() = runBlocking {
@@ -61,15 +63,27 @@ class GetAllCharactersUseCaseTest {
                 url = "",
             ),
         )
-        val expectedSortedCharacters = characters.sortedBy { it.id }
-        coEvery { characterRepository.getAllCharacters() } returns flowOf(Result.success(characters))
+        val pagedCharacters = PagedCharacters(
+            info = InfoModel(
+                count = 2,
+                pages = 1,
+                next = null,
+                prev = null
+            ),
+            results = characters
+        )
+        coEvery { characterRepository.getCharacters(1) } returns flowOf(
+            Result.success(
+                pagedCharacters
+            )
+        )
 
         // When
-        val result = getAllCharactersUseCase.invoke()
+        val result = getPaginatedCharactersUseCase.invoke(1)
 
         // Then
         result.test {
-            assertEquals(expectedSortedCharacters, awaitItem().getOrNull())
+            assertEquals(pagedCharacters, awaitItem().getOrNull())
             cancelAndIgnoreRemainingEvents()
         }
     }

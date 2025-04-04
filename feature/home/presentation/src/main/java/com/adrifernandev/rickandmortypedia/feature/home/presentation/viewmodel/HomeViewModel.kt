@@ -3,40 +3,78 @@ package com.adrifernandev.rickandmortypedia.feature.home.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.adrifernandev.rickandmortypedia.feature.character.domain.model.Character
-import com.adrifernandev.rickandmortypedia.feature.character.domain.usecase.GetAllCharactersUseCase
+import com.adrifernandev.rickandmortypedia.feature.character.domain.model.InfoModel
+import com.adrifernandev.rickandmortypedia.feature.character.domain.usecase.GetPaginatedCharactersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private const val FIRST_PAGE_LOAD_CHARACTERS = 1
+
+private const val NEXT_PAGE = 1
+
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getAllCharactersUseCase: GetAllCharactersUseCase
+    private val getPaginatedCharactersUseCase: GetPaginatedCharactersUseCase
 ) : ViewModel() {
 
-    init {
-        getAllCharacters()
-    }
-
     data class UIState(
-        val characters: List<Character>? = null,
+        val charactersList: List<Character> = emptyList(),
+        val charactersInfo: InfoModel? = null,
+        val currentCharacterPage: Int = 0,
+        val isLoading: Boolean = false,
     )
+
+    sealed class UIEvent {
+        data object LoadNextCharacterPage : UIEvent()
+    }
 
     private val _state: MutableStateFlow<UIState> =
         MutableStateFlow(UIState())
     val state = _state.asStateFlow()
 
-    private fun getAllCharacters() {
-        viewModelScope.launch {
-            getAllCharactersUseCase.invoke().collect { result ->
-                result.onSuccess { characters ->
-                    _state.value = _state.value.copy(
-                        characters = characters
-                    )
-                }
-            }
+    init {
+        getCharacters(FIRST_PAGE_LOAD_CHARACTERS)
+    }
+
+    fun onEvent(event: UIEvent) {
+        when (event) {
+            is UIEvent.LoadNextCharacterPage -> getNextCharactersPage()
         }
     }
 
+    private fun getCharacters(page: Int) {
+        viewModelScope.launch {
+            setLoading(true)
+            getPaginatedCharactersUseCase.invoke(page)
+                .collect { result ->
+                    result.onSuccess { pagedCharacters ->
+                        _state.value = _state.value.copy(
+                            charactersInfo = pagedCharacters?.info,
+                            charactersList = _state.value.charactersList + (pagedCharacters?.results
+                                ?: emptyList()),
+                            currentCharacterPage = page,
+                        )
+                    }.onFailure {
+                        //TODO: Handle error
+                    }
+                }
+            setLoading(false)
+        }
+    }
+
+    private fun getNextCharactersPage() {
+        if (_state.value.charactersInfo?.next != null && !_state.value.isLoading) {
+            val nextPage = _state.value.currentCharacterPage + NEXT_PAGE
+            getCharacters(nextPage)
+        }
+    }
+
+    private fun setLoading(isLoading: Boolean) {
+        _state.value = _state.value.copy(
+            isLoading = isLoading
+        )
+    }
 }

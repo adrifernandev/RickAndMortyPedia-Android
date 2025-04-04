@@ -23,10 +23,10 @@ class CharacterRemoteDataSourceImplTest {
         // Given
         val mockResponse =
             CharacterResponse(info = InfoResponse(1, 1, null, null), results = emptyList())
-        coEvery { characterService.getAllCharacters() } returns Response.success(mockResponse)
+        coEvery { characterService.getCharacters(1) } returns Response.success(mockResponse)
 
         // When
-        val result = dataSource.getAllCharacters().first()
+        val result = dataSource.getCharacters(1).first()
 
         // Then
         assertTrue(result.isSuccess)
@@ -37,13 +37,13 @@ class CharacterRemoteDataSourceImplTest {
     fun `getAllCharacters returns error when API call fails`() = runBlocking {
         // Given
         val mockException = Exception("Internal Server Error")
-        coEvery { characterService.getAllCharacters() } returns Response.error(
+        coEvery { characterService.getCharacters(1) } returns Response.error(
             500,
             mockk(relaxed = true)
         )
 
         // When
-        val result = dataSource.getAllCharacters().first()
+        val result = dataSource.getCharacters(1).first()
 
         // Then
         assertTrue(result.isFailure)
