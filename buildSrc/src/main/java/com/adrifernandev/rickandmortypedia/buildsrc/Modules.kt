@@ -6,6 +6,7 @@ object Modules {
 
     private const val HOME_MODULES = ":home"
     private const val CHARACTER_MODULES = ":character"
+    private const val CHARACTER_DETAIL_MODULES = ":characterdetail"
 
     private const val LAYER_PRESENTATION = ":presentation"
     private const val LAYER_DOMAIN = ":domain"
@@ -16,6 +17,8 @@ object Modules {
     const val COMMON_DATA = "$COMMON_MODULES$LAYER_DATA"
     const val FEATURE_CHARACTER_DATA = "$FEATURE_MODULES$CHARACTER_MODULES$LAYER_DATA"
     const val FEATURE_CHARACTER_DOMAIN = "$FEATURE_MODULES$CHARACTER_MODULES$LAYER_DOMAIN"
+    const val FEATURE_CHARACTER_DETAIL_PRESENTATION =
+        "$FEATURE_MODULES$CHARACTER_DETAIL_MODULES$LAYER_PRESENTATION"
     const val FEATURE_HOME_PRESENTATION = "$FEATURE_MODULES$HOME_MODULES$LAYER_PRESENTATION"
     const val COMMON_PRESENTATION = "$COMMON_MODULES$LAYER_PRESENTATION"
     const val DESIGN_SYSTEM = ":designsystem"

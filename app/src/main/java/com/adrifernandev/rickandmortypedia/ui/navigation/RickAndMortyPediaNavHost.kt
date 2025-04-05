@@ -10,6 +10,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import com.adrifernandev.rickandmortypedia.feature.characterdetail.ui.CharacterDetailScreen
+import com.adrifernandev.rickandmortypedia.feature.characterdetail.viewmodel.CharacterDetailViewModel
 import com.adrifernandev.rickandmortypedia.feature.home.presentation.ui.HomeScreen
 import com.adrifernandev.rickandmortypedia.feature.home.presentation.viewmodel.HomeViewModel
 
@@ -18,7 +20,8 @@ import com.adrifernandev.rickandmortypedia.feature.home.presentation.viewmodel.H
 fun RickAndMortyPediaNavHost(
     modifier: Modifier = Modifier,
     navHostController: NavHostController,
-    homeViewModel: HomeViewModel = hiltViewModel()
+    homeViewModel: HomeViewModel = hiltViewModel(),
+    characterViewModel: CharacterDetailViewModel = hiltViewModel()
 ) {
     Scaffold(
         modifier = modifier,
@@ -43,7 +46,7 @@ fun RickAndMortyPediaNavHost(
                 startDestination = NavigationRoutes.CharacterDetail
             ) {
                 composable<NavigationRoutes.CharacterDetail> {
-                    //TODO: Implement CharacterDetailScreen
+                    CharacterDetailScreen(viewModel = characterViewModel)
                 }
             }
         }
