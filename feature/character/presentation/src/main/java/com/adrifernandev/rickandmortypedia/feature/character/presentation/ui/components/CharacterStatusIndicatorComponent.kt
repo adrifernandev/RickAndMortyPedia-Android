@@ -1,4 +1,4 @@
-package com.adrifernandev.rickandmortypedia.feature.home.presentation.ui.components
+package com.adrifernandev.rickandmortypedia.feature.character.presentation.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

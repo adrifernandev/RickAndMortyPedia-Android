@@ -35,8 +35,8 @@ import com.adrifernandev.rickandmortypedia.designsystem.components.image.DSAsync
 import com.adrifernandev.rickandmortypedia.designsystem.components.image.DSVerticalGradient
 import com.adrifernandev.rickandmortypedia.designsystem.theme.DSTheme
 import com.adrifernandev.rickandmortypedia.feature.character.domain.model.Character
+import com.adrifernandev.rickandmortypedia.feature.character.presentation.ui.components.CharacterStatusIndicatorComponent
 import com.adrifernandev.rickandmortypedia.feature.home.presentation.R
-import com.adrifernandev.rickandmortypedia.feature.home.presentation.ui.components.CharacterStatusIndicatorComponent
 import com.adrifernandev.rickandmortypedia.feature.home.presentation.viewmodel.HomeViewModel
 import com.adrifernandev.rickandmortypedia.common.presentation.R as R_common
 

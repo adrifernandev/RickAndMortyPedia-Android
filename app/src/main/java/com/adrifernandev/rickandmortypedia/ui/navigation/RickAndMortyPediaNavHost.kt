@@ -49,6 +49,7 @@ fun RickAndMortyPediaNavHost(
                                 characterToJson
                             )
                         )
+                        //TODO: Navigate with animation
                     }
                 }
             }
@@ -66,7 +67,9 @@ fun RickAndMortyPediaNavHost(
                         )
                     )
 
-                    CharacterDetailScreen(viewModel = characterViewModel)
+                    CharacterDetailScreen(viewModel = characterViewModel) {
+                        navHostController.navigateUp()
+                    }
                 }
             }
         }
