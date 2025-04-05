@@ -5,11 +5,10 @@ import com.adrifernandev.rickandmortypedia.feature.character.domain.model.Charac
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import javax.inject.Inject
 
 @HiltViewModel
-class CharacterDetailViewModel(
-
-) : ViewModel() {
+class CharacterDetailViewModel @Inject constructor() : ViewModel() {
 
     data class UIState(
         val character: Character? = null,
