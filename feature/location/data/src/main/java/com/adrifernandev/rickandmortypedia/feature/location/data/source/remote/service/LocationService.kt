@@ -1,5 +1,6 @@
 package com.adrifernandev.rickandmortypedia.feature.location.data.source.remote.service
 
+import com.adrifernandev.rickandmortypedia.feature.location.data.source.remote.entity.response.LocationResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
