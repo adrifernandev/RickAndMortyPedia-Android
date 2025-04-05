@@ -5,6 +5,8 @@ import com.adrifernandev.rickandmortypedia.buildsrc.Modules.FEATURE_CHARACTER_DA
 import com.adrifernandev.rickandmortypedia.buildsrc.Modules.FEATURE_CHARACTER_DETAIL_PRESENTATION
 import com.adrifernandev.rickandmortypedia.buildsrc.Modules.FEATURE_CHARACTER_DOMAIN
 import com.adrifernandev.rickandmortypedia.buildsrc.Modules.FEATURE_HOME_PRESENTATION
+import com.adrifernandev.rickandmortypedia.buildsrc.Modules.FEATURE_LOCATION_DATA
+import com.adrifernandev.rickandmortypedia.buildsrc.Modules.FEATURE_LOCATION_DOMAIN
 import com.adrifernandev.rickandmortypedia.buildsrc.Versions
 
 plugins {
@@ -51,4 +53,6 @@ dependencies {
     implementation(project(FEATURE_CHARACTER_DOMAIN))
     implementation(project(COMMON_DATA))
     implementation(project(FEATURE_CHARACTER_DETAIL_PRESENTATION))
+    implementation(project(FEATURE_LOCATION_DATA))
+    implementation(project(FEATURE_LOCATION_DOMAIN))
 }
