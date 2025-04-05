@@ -10,10 +10,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import androidx.navigation.toRoute
+import com.adrifernandev.rickandmortypedia.feature.character.domain.model.Character
 import com.adrifernandev.rickandmortypedia.feature.characterdetail.ui.CharacterDetailScreen
 import com.adrifernandev.rickandmortypedia.feature.characterdetail.viewmodel.CharacterDetailViewModel
 import com.adrifernandev.rickandmortypedia.feature.home.presentation.ui.HomeScreen
 import com.adrifernandev.rickandmortypedia.feature.home.presentation.viewmodel.HomeViewModel
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -38,7 +42,14 @@ fun RickAndMortyPediaNavHost(
                 startDestination = NavigationRoutes.Home
             ) {
                 composable<NavigationRoutes.Home> {
-                    HomeScreen(viewModel = homeViewModel)
+                    HomeScreen(viewModel = homeViewModel) { character ->
+                        val characterToJson = Json.encodeToString(character)
+                        navHostController.navigate(
+                            NavigationRoutes.CharacterDetail(
+                                characterToJson
+                            )
+                        )
+                    }
                 }
             }
 
@@ -46,6 +57,15 @@ fun RickAndMortyPediaNavHost(
                 startDestination = NavigationRoutes.CharacterDetail
             ) {
                 composable<NavigationRoutes.CharacterDetail> {
+                    val argument = it.toRoute<NavigationRoutes.CharacterDetail>()
+                    val character = Json.decodeFromString<Character>(argument.character)
+
+                    characterViewModel.onEvent(
+                        CharacterDetailViewModel.UIEvent.InitializeCharacter(
+                            character
+                        )
+                    )
+
                     CharacterDetailScreen(viewModel = characterViewModel)
                 }
             }

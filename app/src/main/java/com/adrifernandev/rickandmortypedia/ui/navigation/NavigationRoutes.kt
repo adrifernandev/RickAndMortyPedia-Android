@@ -16,5 +16,7 @@ sealed class NavigationRoutes {
     data object CharacterGraph : NavigationRoutes()
 
     @Serializable
-    data object CharacterDetail : NavigationRoutes()
+    data class CharacterDetail(
+        val character: String
+    ) : NavigationRoutes()
 }
