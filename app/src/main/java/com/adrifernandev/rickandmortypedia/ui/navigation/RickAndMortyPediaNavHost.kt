@@ -1,6 +1,7 @@
 package com.adrifernandev.rickandmortypedia.ui.navigation
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -11,6 +12,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.toRoute
+import com.adrifernandev.rickandmortypedia.common.presentation.ui.navigation.getEnterTransition
+import com.adrifernandev.rickandmortypedia.common.presentation.ui.navigation.getExitTransition
 import com.adrifernandev.rickandmortypedia.feature.character.domain.model.Character
 import com.adrifernandev.rickandmortypedia.feature.characterdetail.ui.CharacterDetailScreen
 import com.adrifernandev.rickandmortypedia.feature.characterdetail.viewmodel.CharacterDetailViewModel
@@ -41,7 +44,10 @@ fun RickAndMortyPediaNavHost(
             navigation<NavigationRoutes.HomeGraph>(
                 startDestination = NavigationRoutes.Home
             ) {
-                composable<NavigationRoutes.Home> {
+                composable<NavigationRoutes.Home>(
+                    enterTransition = getEnterTransition(direction = AnimatedContentTransitionScope.SlideDirection.Right),
+                    exitTransition = getExitTransition(direction = AnimatedContentTransitionScope.SlideDirection.Left)
+                ) {
                     HomeScreen(viewModel = homeViewModel) { character ->
                         val characterToJson = Json.encodeToString(character)
                         navHostController.navigate(
@@ -49,7 +55,6 @@ fun RickAndMortyPediaNavHost(
                                 characterToJson
                             )
                         )
-                        //TODO: Navigate with animation
                     }
                 }
             }
@@ -57,7 +62,10 @@ fun RickAndMortyPediaNavHost(
             navigation<NavigationRoutes.CharacterGraph>(
                 startDestination = NavigationRoutes.CharacterDetail("")
             ) {
-                composable<NavigationRoutes.CharacterDetail> {
+                composable<NavigationRoutes.CharacterDetail>(
+                    enterTransition = getEnterTransition(direction = AnimatedContentTransitionScope.SlideDirection.Left),
+                    exitTransition = getExitTransition(direction = AnimatedContentTransitionScope.SlideDirection.Right)
+                ) {
                     val argument = it.toRoute<NavigationRoutes.CharacterDetail>()
                     val character = Json.decodeFromString<Character>(argument.character)
 
