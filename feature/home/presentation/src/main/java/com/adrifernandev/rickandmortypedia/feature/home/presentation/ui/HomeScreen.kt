@@ -38,6 +38,7 @@ import com.adrifernandev.rickandmortypedia.feature.character.domain.model.Charac
 import com.adrifernandev.rickandmortypedia.feature.home.presentation.R
 import com.adrifernandev.rickandmortypedia.feature.home.presentation.ui.components.CharacterStatusIndicatorComponent
 import com.adrifernandev.rickandmortypedia.feature.home.presentation.viewmodel.HomeViewModel
+import com.adrifernandev.rickandmortypedia.common.presentation.R as R_common
 
 @Composable
 fun HomeScreen(
@@ -96,7 +97,7 @@ private fun HomeContent(
                         modifier = Modifier.fillMaxSize(),
                         imageUrl = character.image,
                         contentDescription = stringResource(
-                            id = R.string.avatar_image_description,
+                            id = R_common.string.avatar_image_description,
                             character.name
                         )
                     )
