@@ -52,9 +52,7 @@ fun HomeScreen(
         loadNextCharacterPage = {
             viewModel.onEvent(HomeViewModel.UIEvent.LoadNextCharacterPage)
         },
-        onCharacterItemClicked = {
-
-        }
+        onCharacterItemClicked = onCharacterItemClicked
     )
 }
 

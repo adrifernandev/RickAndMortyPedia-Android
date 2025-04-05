@@ -54,7 +54,7 @@ fun RickAndMortyPediaNavHost(
             }
 
             navigation<NavigationRoutes.CharacterGraph>(
-                startDestination = NavigationRoutes.CharacterDetail
+                startDestination = NavigationRoutes.CharacterDetail("")
             ) {
                 composable<NavigationRoutes.CharacterDetail> {
                     val argument = it.toRoute<NavigationRoutes.CharacterDetail>()

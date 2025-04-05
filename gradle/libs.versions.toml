@@ -110,7 +110,8 @@ layer-domain = [
     "androidx-core-ktx",
     "com-google-dagger-hilt-android",
     "androidx-compose-bom",
-    "androidx-runtime-android"
+    "androidx-runtime-android",
+    "kotlinx-serialization-json"
 ]
 
 layer-data = [
