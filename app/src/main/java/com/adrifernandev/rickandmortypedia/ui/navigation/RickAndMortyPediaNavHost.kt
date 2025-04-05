@@ -38,6 +38,14 @@ fun RickAndMortyPediaNavHost(
                     HomeScreen(viewModel = homeViewModel)
                 }
             }
+
+            navigation<NavigationRoutes.CharacterGraph>(
+                startDestination = NavigationRoutes.CharacterDetail
+            ) {
+                composable<NavigationRoutes.CharacterDetail> {
+                    //TODO: Implement CharacterDetailScreen
+                }
+            }
         }
     }
 }
