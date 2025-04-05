@@ -1,5 +1,6 @@
 package com.adrifernandev.rickandmortypedia.designsystem.components.image
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,13 +23,13 @@ fun DSAsyncImage(
 ) {
     val context = LocalContext.current
     AsyncImage(
+        modifier = modifier.fillMaxSize(),
         model = ImageRequest.Builder(context)
             .data(imageUrl)
             .memoryCachePolicy(CachePolicy.ENABLED)
             .diskCachePolicy(CachePolicy.ENABLED)
             .build(),
         contentDescription = contentDescription,
-        modifier = modifier,
         contentScale = contentScale,
         placeholder = ColorPainter(placeholderColor),
         error = ColorPainter(errorColor),
