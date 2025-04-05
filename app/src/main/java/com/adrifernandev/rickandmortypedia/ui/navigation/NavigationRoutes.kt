@@ -10,4 +10,11 @@ sealed class NavigationRoutes {
 
     @Serializable
     data object Home : NavigationRoutes()
+
+    //Character Graph
+    @Serializable
+    data object CharacterGraph : NavigationRoutes()
+
+    @Serializable
+    data object CharacterDetail : NavigationRoutes()
 }
