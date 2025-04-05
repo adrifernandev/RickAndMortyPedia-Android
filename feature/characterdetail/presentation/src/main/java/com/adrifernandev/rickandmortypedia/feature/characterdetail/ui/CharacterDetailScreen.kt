@@ -75,6 +75,12 @@ private fun CharacterDetailContent(
                 characterStatus = state.character.status,
                 characterSpecies = state.character.species
             )
+            Text(
+                "Origin ${state.originLocation?.name}"
+            )
+            Text(
+                "Last known location ${state.lastKnownLocation?.name}"
+            )
             //TODO: Implement origin of the character
             //TODO: Implement last known location of the character
             //TODO: Implement horizontal scroll of episodes

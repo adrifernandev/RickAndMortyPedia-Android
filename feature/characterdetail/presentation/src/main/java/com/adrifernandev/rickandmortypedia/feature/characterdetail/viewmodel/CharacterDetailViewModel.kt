@@ -43,17 +43,16 @@ class CharacterDetailViewModel @Inject constructor(
         _state.value.character?.let {
             val originLocationId = extractLocationIdFromUrl(it.origin.url)
             val lastKnownLocationId = extractLocationIdFromUrl(it.location.url)
+            val listWithIds = listOfNotNull(
+                originLocationId,
+                lastKnownLocationId
+            )
 
             viewModelScope.launch {
                 _state.value = _state.value.copy(
                     isLocationLoading = true
                 )
-                getLocationsByIdsUseCase.invoke(
-                    listOf(
-                        originLocationId,
-                        lastKnownLocationId
-                    )
-                ).collect { response ->
+                getLocationsByIdsUseCase.invoke(listWithIds).collect { response ->
                     response.onSuccess { locations ->
                         val originLocation =
                             locations.find { location -> location.id == originLocationId }
@@ -75,7 +74,7 @@ class CharacterDetailViewModel @Inject constructor(
         }
     }
 
-    private fun extractLocationIdFromUrl(url: String): Int {
-        return url.substringAfterLast("/").toInt()
+    private fun extractLocationIdFromUrl(url: String): Int? {
+        return url.split("/").lastOrNull()?.toIntOrNull()
     }
 }

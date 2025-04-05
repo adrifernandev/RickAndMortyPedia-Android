@@ -1,8 +1,11 @@
 package com.adrifernandev.rickandmortypedia.feature.location.data.di
 
+import com.adrifernandev.rickandmortypedia.feature.location.data.repository.LocationRepositoryImpl
+import com.adrifernandev.rickandmortypedia.feature.location.data.repository.factory.LocationFactory
 import com.adrifernandev.rickandmortypedia.feature.location.data.source.remote.datasource.LocationRemoteDataSource
 import com.adrifernandev.rickandmortypedia.feature.location.data.source.remote.datasource.LocationRemoteDataSourceImpl
 import com.adrifernandev.rickandmortypedia.feature.location.data.source.remote.service.LocationService
+import com.adrifernandev.rickandmortypedia.feature.location.domain.repository.LocationRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,5 +31,13 @@ object LocationDataModule {
         locationService: LocationService
     ): LocationRemoteDataSource {
         return LocationRemoteDataSourceImpl(locationService)
+    }
+
+    @Provides
+    @Singleton
+    fun providesLocationRepository(
+        locationFactory: LocationFactory
+    ): LocationRepository {
+        return LocationRepositoryImpl(locationFactory)
     }
 }
