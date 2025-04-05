@@ -14,7 +14,7 @@ interface LocationService {
     }
 
     @GET(LOCATION_PATH)
-    suspend fun getLocations(
+    suspend fun getLocationsByIds(
         @Path(IDS) ids: String
     ): Response<List<LocationResponse>>
 }

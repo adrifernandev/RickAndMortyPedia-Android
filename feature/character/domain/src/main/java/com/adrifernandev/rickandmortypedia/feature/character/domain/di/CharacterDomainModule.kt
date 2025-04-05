@@ -1,4 +1,4 @@
-package com.adrifernandev.rickandmortypedia.feature.character.domain
+package com.adrifernandev.rickandmortypedia.feature.character.domain.di
 
 import com.adrifernandev.rickandmortypedia.feature.character.domain.repository.CharacterRepository
 import com.adrifernandev.rickandmortypedia.feature.character.domain.usecase.GetPaginatedCharactersUseCase
