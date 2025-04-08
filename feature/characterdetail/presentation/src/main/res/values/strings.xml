@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="origin_location">Origin</string>
+    <string name="last_known_location">Last known location</string>
+    <string name="unknown">Unknown</string>
+</resources>
