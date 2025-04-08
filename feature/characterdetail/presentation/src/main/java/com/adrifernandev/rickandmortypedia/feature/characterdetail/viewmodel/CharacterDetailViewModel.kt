@@ -52,25 +52,23 @@ class CharacterDetailViewModel @Inject constructor(
                 _state.value = _state.value.copy(
                     isLocationLoading = true
                 )
-                getLocationsByIdsUseCase.invoke(listWithIds).collect { response ->
-                    response.onSuccess { locations ->
-                        val originLocation =
-                            locations.find { location -> location.id == originLocationId }
-                        val lastKnownLocation =
-                            locations.find { location -> location.id == lastKnownLocationId }
+                getLocationsByIdsUseCase.invoke(listWithIds).onSuccess { locations ->
+                    val originLocation =
+                        locations.find { location -> location.id == originLocationId }
+                    val lastKnownLocation =
+                        locations.find { location -> location.id == lastKnownLocationId }
 
-                        _state.value = _state.value.copy(
-                            originLocation = originLocation,
-                            lastKnownLocation = lastKnownLocation
-                        )
-                    }.onFailure {
-                        //TODO: Handle error
-                    }
+                    _state.value = _state.value.copy(
+                        originLocation = originLocation,
+                        lastKnownLocation = lastKnownLocation
+                    )
+                }.onFailure {
+                    //TODO: Handle error
                 }
-                _state.value = _state.value.copy(
-                    isLocationLoading = false
-                )
             }
+            _state.value = _state.value.copy(
+                isLocationLoading = false
+            )
         }
     }
 

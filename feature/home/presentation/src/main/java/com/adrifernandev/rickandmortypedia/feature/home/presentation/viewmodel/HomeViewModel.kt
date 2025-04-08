@@ -49,20 +49,18 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             setLoading(true)
             getPaginatedCharactersUseCase.invoke(page)
-                .collect { result ->
-                    result.onSuccess { pagedCharacters ->
-                        _state.value = _state.value.copy(
-                            charactersInfo = pagedCharacters?.info,
-                            charactersList = _state.value.charactersList + (pagedCharacters?.results
-                                ?: emptyList()),
-                            currentCharacterPage = page,
-                        )
-                    }.onFailure {
-                        //TODO: Handle error
-                    }
+                .onSuccess { result ->
+                    _state.value = _state.value.copy(
+                        charactersInfo = result?.info,
+                        charactersList = _state.value.charactersList + (result?.results
+                            ?: emptyList()),
+                        currentCharacterPage = page,
+                    )
+                }.onFailure {
+                    //TODO: Handle error
                 }
-            setLoading(false)
         }
+        setLoading(false)
     }
 
     private fun getNextCharactersPage() {
