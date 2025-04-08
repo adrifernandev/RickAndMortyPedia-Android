@@ -87,8 +87,9 @@ private fun CharacterDetailContent(
             )
             CharacterLocationInfoModule(
                 modifier = Modifier.padding(horizontal = DSTheme.spacing.xl),
-                title = "First seen in", //TODO: Extract resource
-                location = state.originLocation?.name ?: "Unknown"
+                title = stringResource(R.string.origin_location),
+                location = state.originLocation?.name ?: stringResource(R.string.unknown),
+                dimension = state.originLocation?.dimension
             )
             DSSpacer(
                 spacing = DSTheme.spacing.large,
@@ -96,8 +97,9 @@ private fun CharacterDetailContent(
             )
             CharacterLocationInfoModule(
                 modifier = Modifier.padding(horizontal = DSTheme.spacing.xl),
-                title = "Last seen in", //TODO: Extract resource
-                location = state.lastKnownLocation?.name ?: "Unknown"
+                title = stringResource(R.string.last_known_location),
+                location = state.lastKnownLocation?.name ?: stringResource(R.string.unknown),
+                dimension = state.originLocation?.dimension
             )
             //TODO: Implement horizontal scroll of episodes
         }
@@ -108,7 +110,8 @@ private fun CharacterDetailContent(
 private fun CharacterLocationInfoModule(
     modifier: Modifier = Modifier,
     title: String,
-    location: String
+    location: String,
+    dimension: String? = null
 ) {
     Column(
         modifier = modifier
@@ -126,26 +129,44 @@ private fun CharacterLocationInfoModule(
                 .fillMaxWidth()
                 .height(150.dp),
             colors = CardDefaults.elevatedCardColors(
-                contentColor = MaterialTheme.colorScheme.background
+                contentColor = Color.White
             ),
             elevation = CardDefaults.elevatedCardElevation(
                 defaultElevation = DSTheme.elevations.level5,
                 pressedElevation = 0.dp,
             )
         ) {
-            Box {
+            Box(
+                contentAlignment = Alignment.Center
+            ) {
                 Image(
                     modifier = Modifier.fillMaxSize(),
                     painter = painterResource(id = R.drawable.rick_and_morty_planet_background),
                     contentScale = ContentScale.Crop,
                     contentDescription = null
                 )
-                Text(
-                    modifier = Modifier.align(Alignment.Center),
-                    text = location,
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.headlineLarge
-                )
+                Column(
+                    modifier = Modifier.padding(DSTheme.spacing.medium),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = location,
+                        textAlign = TextAlign.Center,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        style = MaterialTheme.typography.headlineLarge
+                    )
+                    dimension?.let {
+                        Text(
+                            text = dimension,
+                            textAlign = TextAlign.Center,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+                }
+
             }
         }
     }
