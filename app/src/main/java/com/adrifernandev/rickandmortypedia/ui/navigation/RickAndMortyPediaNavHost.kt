@@ -18,7 +18,6 @@ import com.adrifernandev.rickandmortypedia.feature.character.domain.model.Charac
 import com.adrifernandev.rickandmortypedia.feature.characterdetail.ui.CharacterDetailScreen
 import com.adrifernandev.rickandmortypedia.feature.characterdetail.viewmodel.CharacterDetailViewModel
 import com.adrifernandev.rickandmortypedia.feature.home.presentation.ui.HomeScreen
-import com.adrifernandev.rickandmortypedia.feature.home.presentation.viewmodel.HomeViewModel
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -26,9 +25,7 @@ import kotlinx.serialization.json.Json
 @Composable
 fun RickAndMortyPediaNavHost(
     modifier: Modifier = Modifier,
-    navHostController: NavHostController,
-    homeViewModel: HomeViewModel = hiltViewModel(),
-    characterViewModel: CharacterDetailViewModel = hiltViewModel()
+    navHostController: NavHostController
 ) {
     Scaffold(
         modifier = modifier,
@@ -48,7 +45,7 @@ fun RickAndMortyPediaNavHost(
                     enterTransition = getEnterTransition(direction = AnimatedContentTransitionScope.SlideDirection.Right),
                     exitTransition = getExitTransition(direction = AnimatedContentTransitionScope.SlideDirection.Left)
                 ) {
-                    HomeScreen(viewModel = homeViewModel) { character ->
+                    HomeScreen(viewModel = hiltViewModel()) { character ->
                         val characterToJson = Json.encodeToString(character)
                         navHostController.navigate(
                             NavigationRoutes.CharacterDetail(
@@ -68,6 +65,8 @@ fun RickAndMortyPediaNavHost(
                 ) {
                     val argument = it.toRoute<NavigationRoutes.CharacterDetail>()
                     val character = Json.decodeFromString<Character>(argument.character)
+
+                    val characterViewModel: CharacterDetailViewModel = hiltViewModel()
 
                     characterViewModel.onEvent(
                         CharacterDetailViewModel.UIEvent.InitializeCharacter(
