@@ -77,7 +77,9 @@ private fun CharacterDetailContent(
 ) {
     state.character?.let {
         Column(
-            modifier = modifier.verticalScroll(rememberScrollState())
+            modifier = modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
         ) {
             CharacterTopBasicInfoModule(
                 characterImage = state.character.image,
