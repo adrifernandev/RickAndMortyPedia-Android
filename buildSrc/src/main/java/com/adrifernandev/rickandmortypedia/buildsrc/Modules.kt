@@ -8,6 +8,7 @@ object Modules {
     private const val CHARACTER_MODULES = ":character"
     private const val LOCATION_MODULES = ":location"
     private const val CHARACTER_DETAIL_MODULES = ":characterdetail"
+    private const val EPISODE_MODULES = ":episode"
 
     private const val LAYER_PRESENTATION = ":presentation"
     private const val LAYER_DOMAIN = ":domain"
@@ -28,6 +29,8 @@ object Modules {
 
     const val FEATURE_LOCATION_DATA = "$FEATURE_MODULES$LOCATION_MODULES$LAYER_DATA"
     const val FEATURE_LOCATION_DOMAIN = "$FEATURE_MODULES$LOCATION_MODULES$LAYER_DOMAIN"
+
+    const val FEATURE_EPISODE_DATA = "$FEATURE_MODULES$EPISODE_MODULES$LAYER_DATA"
 
     const val COMMON_PRESENTATION = "$COMMON_MODULES$LAYER_PRESENTATION"
     const val DESIGN_SYSTEM = ":designsystem"
