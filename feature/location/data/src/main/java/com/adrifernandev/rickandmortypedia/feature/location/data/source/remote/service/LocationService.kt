@@ -10,7 +10,6 @@ interface LocationService {
     companion object {
         private const val IDS = "ids"
         private const val LOCATION_PATH = "location/{$IDS}"
-
     }
 
     @GET(LOCATION_PATH)
