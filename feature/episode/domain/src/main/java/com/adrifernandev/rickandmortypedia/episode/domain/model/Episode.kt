@@ -7,7 +7,7 @@ import java.util.Date
 data class Episode(
     val id: Int,
     val name: String,
-    val airDate: Date,
+    val airDate: Date?,
     val episode: Int,
     val season: Int,
     val characters: List<String>,

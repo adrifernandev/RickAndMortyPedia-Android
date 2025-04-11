@@ -12,7 +12,7 @@ data class EpisodeResponse(
     @SerializedName("air_date")
     val airDate: String,
     @SerializedName("episode")
-    val episode: String,
+    val seasonAndEpisode: String,
     @SerializedName("characters")
     val characters: List<String>
 )

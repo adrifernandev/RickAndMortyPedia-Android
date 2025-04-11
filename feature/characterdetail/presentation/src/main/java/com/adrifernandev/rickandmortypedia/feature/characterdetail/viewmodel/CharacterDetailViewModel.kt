@@ -2,18 +2,22 @@ package com.adrifernandev.rickandmortypedia.feature.characterdetail.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.adrifernandev.rickandmortypedia.episode.domain.model.Episode
+import com.adrifernandev.rickandmortypedia.episode.domain.usecase.GetEpisodesByIdsUseCase
 import com.adrifernandev.rickandmortypedia.feature.character.domain.model.Character
 import com.adrifernandev.rickandmortypedia.feature.location.domain.model.Location
 import com.adrifernandev.rickandmortypedia.feature.location.domain.usecase.GetLocationsByIdsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CharacterDetailViewModel @Inject constructor(
-    private val getLocationsByIdsUseCase: GetLocationsByIdsUseCase
+    private val getLocationsByIdsUseCase: GetLocationsByIdsUseCase,
+    private val getEpisodesByIdsUseCase: GetEpisodesByIdsUseCase
 ) : ViewModel() {
 
     data class UIState(
@@ -21,6 +25,7 @@ class CharacterDetailViewModel @Inject constructor(
         val originLocation: Location? = null,
         val lastKnownLocation: Location? = null,
         val isLocationLoading: Boolean = false,
+        val episodes: List<Episode>? = null
     )
 
     sealed class UIEvent {
@@ -34,13 +39,16 @@ class CharacterDetailViewModel @Inject constructor(
         when (event) {
             is UIEvent.InitializeCharacter -> {
                 _state.value = _state.value.copy(character = event.character)
+                //TODO: Check if this is a good way to do concurrent calls
                 getCharacterOriginAndLastKnownLocations()
+                getCharacterEpisodes()
             }
         }
     }
 
     private fun getCharacterOriginAndLastKnownLocations() {
         _state.value.character?.let {
+            //TODO: Is this logic well implemented here? Shouldn't it be in the useCase????
             val originLocationId = extractLocationIdFromUrl(it.origin.url)
             val lastKnownLocationId = extractLocationIdFromUrl(it.location.url)
             val listWithIds = listOfNotNull(
@@ -58,6 +66,7 @@ class CharacterDetailViewModel @Inject constructor(
                     val lastKnownLocation =
                         locations.find { location -> location.id == lastKnownLocationId }
 
+                    //TODO: Replace it with .update{ } as below
                     _state.value = _state.value.copy(
                         originLocation = originLocation,
                         lastKnownLocation = lastKnownLocation
@@ -72,6 +81,28 @@ class CharacterDetailViewModel @Inject constructor(
         }
     }
 
+    private fun getCharacterEpisodes() {
+        _state.value.character?.let {
+            viewModelScope.launch {
+                _state.value = _state.value.copy(
+                    isLocationLoading = true
+                )
+                //TODO: Extract this to a separate function
+                val episodeIds = it.episodes.map { it.substringAfterLast("/").toInt() }
+                getEpisodesByIdsUseCase.invoke(episodeIds).onSuccess { episodes ->
+                    _state.update {
+                        it.copy(
+                            episodes = episodes
+                        )
+                    }
+                }.onFailure {
+                    //TODO: Handle error
+                }
+            }
+        }
+    }
+
+    //TODO: Shouldn't it be on a more reusable place?
     private fun extractLocationIdFromUrl(url: String): Int? {
         return url.split("/").lastOrNull()?.toIntOrNull()
     }

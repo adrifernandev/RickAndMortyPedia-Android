@@ -44,7 +44,7 @@ data class CharacterItemResponse(
     @SerializedName("image")
     val image: String,
     @SerializedName("episode")
-    val episode: List<String>,
+    val episodes: List<String>,
     @SerializedName("url")
     val url: String,
     @SerializedName("created")

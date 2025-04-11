@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -103,7 +105,19 @@ private fun CharacterDetailContent(
                 location = state.lastKnownLocation?.name ?: stringResource(R.string.unknown),
                 dimension = state.originLocation?.dimension
             )
-            //TODO: Implement horizontal scroll of episodes
+
+            //TODO: Extract and finish the component
+            state.episodes?.let {
+                DSSpacer(
+                    spacing = DSTheme.spacing.large,
+                    type = SpacerType.VERTICAL
+                )
+                LazyRow {
+                    itemsIndexed(state.episodes) { _, episode ->
+                        Text("${episode.season} ${episode.episode}")
+                    }
+                }
+            }
         }
     }
 }
