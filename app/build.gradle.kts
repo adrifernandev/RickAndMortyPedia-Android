@@ -7,6 +7,7 @@ import com.adrifernandev.rickandmortypedia.buildsrc.Modules.FEATURE_CHARACTER_DA
 import com.adrifernandev.rickandmortypedia.buildsrc.Modules.FEATURE_CHARACTER_DETAIL_PRESENTATION
 import com.adrifernandev.rickandmortypedia.buildsrc.Modules.FEATURE_CHARACTER_DOMAIN
 import com.adrifernandev.rickandmortypedia.buildsrc.Modules.FEATURE_CHARACTER_PRESENTATION
+import com.adrifernandev.rickandmortypedia.buildsrc.Modules.FEATURE_EPISODE_DATA
 import com.adrifernandev.rickandmortypedia.buildsrc.Modules.FEATURE_EPISODE_DOMAIN
 import com.adrifernandev.rickandmortypedia.buildsrc.Modules.FEATURE_HOME_PRESENTATION
 import com.adrifernandev.rickandmortypedia.buildsrc.Modules.FEATURE_LOCATION_DATA
@@ -127,6 +128,7 @@ dependencies {
     implementation(project(FEATURE_LOCATION_DOMAIN))
     implementation(project(FEATURE_LOCATION_DATA))
     implementation(project(FEATURE_EPISODE_DOMAIN))
+    implementation(project(FEATURE_EPISODE_DATA))
 
     // [DI Module implementation needed] //
     implementation(project(COMMON_DI))
@@ -145,4 +147,5 @@ dependencies {
     kover(project(FEATURE_LOCATION_DOMAIN))
     kover(project(FEATURE_LOCATION_DATA))
     kover(project(FEATURE_EPISODE_DOMAIN))
+    kover(project(FEATURE_EPISODE_DATA))
 }
