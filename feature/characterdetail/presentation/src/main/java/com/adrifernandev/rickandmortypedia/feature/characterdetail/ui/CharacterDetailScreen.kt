@@ -127,7 +127,7 @@ private fun CharacterEpisodesModule(
 ) {
     Text(
         modifier = Modifier.padding(horizontal = DSTheme.spacing.xl),
-        text = "Seen on these episodes", //TODO: Extract to resource
+        text = "Seen on these episodes", //TODO: Extract to resource and implement plural/singular
         style = MaterialTheme.typography.bodyLarge
     )
     DSSpacer(

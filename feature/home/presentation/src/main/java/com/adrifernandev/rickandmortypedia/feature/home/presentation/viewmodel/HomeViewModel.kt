@@ -59,8 +59,8 @@ class HomeViewModel @Inject constructor(
                 }.onFailure {
                     //TODO: Handle error
                 }
+            setLoading(false)
         }
-        setLoading(false)
     }
 
     private fun getNextCharactersPage() {
