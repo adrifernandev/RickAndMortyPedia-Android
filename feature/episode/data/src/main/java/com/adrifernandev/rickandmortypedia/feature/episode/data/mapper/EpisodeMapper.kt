@@ -19,7 +19,6 @@ private fun EpisodeResponse.toDomain() = Episode(
     characters = characters
 )
 
-//TODO: Extract this function as it will be utils on other mappers
 private fun parseAirDateToDate(dateAsString: String): Date? {
     return try {
         val formatter = SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH)

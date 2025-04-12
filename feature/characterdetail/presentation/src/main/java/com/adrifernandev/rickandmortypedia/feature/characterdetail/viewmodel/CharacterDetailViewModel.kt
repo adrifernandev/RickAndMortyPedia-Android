@@ -5,8 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.adrifernandev.rickandmortypedia.episode.domain.model.Episode
 import com.adrifernandev.rickandmortypedia.episode.domain.usecase.GetEpisodesByIdsUseCase
 import com.adrifernandev.rickandmortypedia.feature.character.domain.model.Character
+import com.adrifernandev.rickandmortypedia.feature.character.domain.utils.extractEpisodesIdsFromCharacter
 import com.adrifernandev.rickandmortypedia.feature.location.domain.model.Location
 import com.adrifernandev.rickandmortypedia.feature.location.domain.usecase.GetLocationsByIdsUseCase
+import com.adrifernandev.rickandmortypedia.feature.location.domain.utils.extractLocationIdFromUrl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -66,18 +68,19 @@ class CharacterDetailViewModel @Inject constructor(
                     val lastKnownLocation =
                         locations.find { location -> location.id == lastKnownLocationId }
 
-                    //TODO: Replace it with .update{ } as below
-                    _state.value = _state.value.copy(
-                        originLocation = originLocation,
-                        lastKnownLocation = lastKnownLocation
-                    )
+                    _state.update { state ->
+                        state.copy(
+                            originLocation = originLocation,
+                            lastKnownLocation = lastKnownLocation
+                        )
+                    }
                 }.onFailure {
                     //TODO: Handle error
                 }
             }
-            _state.value = _state.value.copy(
-                isLocationLoading = false
-            )
+            _state.update { state ->
+                state.copy(isLocationLoading = false)
+            }
         }
     }
 
@@ -87,9 +90,8 @@ class CharacterDetailViewModel @Inject constructor(
                 _state.value = _state.value.copy(
                     isLocationLoading = true
                 )
-                //TODO: Extract this to a separate function
-                val episodeIds = it.episodes.map { it.substringAfterLast("/").toInt() }
-                getEpisodesByIdsUseCase.invoke(episodeIds).onSuccess { episodes ->
+                val episodesIds = extractEpisodesIdsFromCharacter(it)
+                getEpisodesByIdsUseCase.invoke(episodesIds).onSuccess { episodes ->
                     _state.update {
                         it.copy(
                             episodes = episodes
@@ -100,10 +102,5 @@ class CharacterDetailViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    //TODO: Shouldn't it be on a more reusable place?
-    private fun extractLocationIdFromUrl(url: String): Int? {
-        return url.split("/").lastOrNull()?.toIntOrNull()
     }
 }
