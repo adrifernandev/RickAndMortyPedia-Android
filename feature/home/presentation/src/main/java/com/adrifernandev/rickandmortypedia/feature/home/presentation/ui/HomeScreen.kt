@@ -82,10 +82,9 @@ fun HomeScreen(
             )
         }
     ) { paddingValues ->
-
         HomeContent(
             modifier = modifier
-                .padding(paddingValues)
+                .padding(top = paddingValues.calculateTopPadding())
                 .fillMaxSize(),
             state = state,
             loadNextCharacterPage = {
