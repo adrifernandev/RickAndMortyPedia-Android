@@ -36,6 +36,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.adrifernandev.rickandmortypedia.common.presentation.ui.dates.DatesFormatter.formatDateToString
 import com.adrifernandev.rickandmortypedia.designsystem.components.icons.DSCircularPrimaryIconButton
 import com.adrifernandev.rickandmortypedia.designsystem.components.image.DSAsyncImage
 import com.adrifernandev.rickandmortypedia.designsystem.components.image.DSVerticalGradient
@@ -47,10 +48,6 @@ import com.adrifernandev.rickandmortypedia.feature.character.domain.model.Charac
 import com.adrifernandev.rickandmortypedia.feature.character.presentation.ui.components.CharacterStatusIndicatorComponent
 import com.adrifernandev.rickandmortypedia.feature.characterdetail.presentation.R
 import com.adrifernandev.rickandmortypedia.feature.characterdetail.viewmodel.CharacterDetailViewModel
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-import java.util.Date
-import java.util.Locale
 import com.adrifernandev.rickandmortypedia.common.presentation.R as R_common
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -185,10 +182,7 @@ private fun CharacterEpisodesModule(
                         )
                         episode.airDate?.let {
                             Text(
-                                text = formatDate(
-                                    date = it,
-                                    locale = Locale.getDefault()
-                                ),
+                                text = formatDateToString(date = it),
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
                                 style = MaterialTheme.typography.bodyLarge
@@ -199,15 +193,6 @@ private fun CharacterEpisodesModule(
             }
         }
     }
-}
-
-//TODO: Extract this to a util fun
-private fun formatDate(date: Date, locale: Locale): String {
-    val formatter = DateTimeFormatter.ofPattern("dd MMM yyyy", locale)
-    val localDate = date.toInstant()
-        .atZone(ZoneId.systemDefault())
-        .toLocalDate()
-    return formatter.format(localDate)
 }
 
 @Composable
