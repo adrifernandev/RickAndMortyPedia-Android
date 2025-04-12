@@ -2,4 +2,5 @@
 <resources>
     <string name="avatar_image_description">%1s Avatar</string>
     <string name="go_back_description">Go back</string>
+    <string name="app_name">RickAndMortyPedia</string>
 </resources>

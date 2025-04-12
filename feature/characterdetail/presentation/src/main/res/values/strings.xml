@@ -3,4 +3,10 @@
     <string name="origin_location">Origin</string>
     <string name="last_known_location">Last known location</string>
     <string name="unknown">Unknown</string>
+    <string name="season_and_episode">S%1sE%2s</string>
+
+    <plurals name="seen_on_episodes">
+        <item quantity="one">Seen on this episode</item>
+        <item quantity="other">Seen on these episodes</item>
+    </plurals>
 </resources>

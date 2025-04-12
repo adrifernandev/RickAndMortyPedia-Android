@@ -1,6 +1,5 @@
 package com.adrifernandev.rickandmortypedia.feature.home.presentation.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
@@ -22,7 +20,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -30,7 +27,6 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
@@ -40,6 +36,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.adrifernandev.rickandmortypedia.common.presentation.ui.previews.PhonePreviews
 import com.adrifernandev.rickandmortypedia.designsystem.components.image.DSAsyncImage
 import com.adrifernandev.rickandmortypedia.designsystem.components.image.DSVerticalGradient
+import com.adrifernandev.rickandmortypedia.designsystem.components.topbars.DSTextAndLogoTopBar
 import com.adrifernandev.rickandmortypedia.designsystem.theme.DSTheme
 import com.adrifernandev.rickandmortypedia.feature.character.domain.model.Character
 import com.adrifernandev.rickandmortypedia.feature.character.presentation.ui.components.CharacterStatusIndicatorComponent
@@ -57,28 +54,14 @@ fun HomeScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
     Scaffold(
         topBar = {
-            //TODO: Extract this to a function
-            TopAppBar(
-                title = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(DSTheme.spacing.large)
-                    ) {
-                        val logo = if (isSystemInDarkTheme()) {
-                            R.drawable.rick_and_morty_white_logo
-                        } else {
-                            R.drawable.rick_and_morty_black_logo
-                        }
-                        Image(
-                            modifier = Modifier.size(32.dp),
-                            painter = painterResource(id = logo),
-                            contentDescription = null
-                        )
-                        Text(
-                            text = "RickAndMortyPedia" //TODO: Use app name
-                        )
-                    }
-                }
+            val logo = if (isSystemInDarkTheme()) {
+                R.drawable.rick_and_morty_white_logo
+            } else {
+                R.drawable.rick_and_morty_black_logo
+            }
+            DSTextAndLogoTopBar(
+                text = R_common.string.app_name,
+                logo = logo
             )
         }
     ) { paddingValues ->
