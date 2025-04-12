@@ -2,12 +2,15 @@ package com.adrifernandev.rickandmortypedia.feature.characterdetail.ui
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
@@ -19,7 +22,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -39,10 +41,15 @@ import com.adrifernandev.rickandmortypedia.designsystem.components.image.DSVerti
 import com.adrifernandev.rickandmortypedia.designsystem.components.spacing.DSSpacer
 import com.adrifernandev.rickandmortypedia.designsystem.components.spacing.SpacerType
 import com.adrifernandev.rickandmortypedia.designsystem.theme.DSTheme
+import com.adrifernandev.rickandmortypedia.episode.domain.model.Episode
 import com.adrifernandev.rickandmortypedia.feature.character.domain.model.CharacterStatus
 import com.adrifernandev.rickandmortypedia.feature.character.presentation.ui.components.CharacterStatusIndicatorComponent
 import com.adrifernandev.rickandmortypedia.feature.characterdetail.presentation.R
 import com.adrifernandev.rickandmortypedia.feature.characterdetail.viewmodel.CharacterDetailViewModel
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.Date
+import java.util.Locale
 import com.adrifernandev.rickandmortypedia.common.presentation.R as R_common
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -54,40 +61,32 @@ fun CharacterDetailScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    Scaffold(
-        topBar = {
-            DSCircularPrimaryIconButton(
-                navigateBack = navigateBack,
-                icon = Icons.AutoMirrored.Filled.ArrowBack,
-                iconDescription = stringResource(R_common.string.go_back_description)
-            )
-        },
-        content = { _ ->
-            CharacterDetailContent(
-                modifier = modifier,
-                state = state
-            )
-        }
+    CharacterDetailContent(
+        modifier = modifier,
+        state = state,
+        navigateBack = navigateBack
     )
-
 }
 
 @Composable
 private fun CharacterDetailContent(
     modifier: Modifier = Modifier,
-    state: CharacterDetailViewModel.UIState
+    state: CharacterDetailViewModel.UIState,
+    navigateBack: () -> Unit
 ) {
     state.character?.let {
         Column(
             modifier = modifier
                 .fillMaxSize()
+                .navigationBarsPadding()
                 .verticalScroll(rememberScrollState())
         ) {
             CharacterTopBasicInfoModule(
                 characterImage = state.character.image,
                 characterName = state.character.name,
                 characterStatus = state.character.status,
-                characterSpecies = state.character.species
+                characterSpecies = state.character.species,
+                navigateBack = navigateBack
             )
             CharacterLocationInfoModule(
                 modifier = Modifier.padding(horizontal = DSTheme.spacing.xl),
@@ -105,21 +104,102 @@ private fun CharacterDetailContent(
                 location = state.lastKnownLocation?.name ?: stringResource(R.string.unknown),
                 dimension = state.originLocation?.dimension
             )
-
-            //TODO: Extract and finish the component
+            DSSpacer(
+                spacing = DSTheme.spacing.large,
+                type = SpacerType.VERTICAL
+            )
             state.episodes?.let {
-                DSSpacer(
-                    spacing = DSTheme.spacing.large,
-                    type = SpacerType.VERTICAL
+                CharacterEpisodesModule(
+                    episodes = it
                 )
-                LazyRow {
-                    itemsIndexed(state.episodes) { _, episode ->
-                        Text("${episode.season} ${episode.episode}")
+            }
+            DSSpacer(
+                spacing = DSTheme.spacing.xxl,
+                type = SpacerType.VERTICAL
+            )
+        }
+    }
+}
+
+@Composable
+private fun CharacterEpisodesModule(
+    episodes: List<Episode>
+) {
+    Text(
+        modifier = Modifier.padding(horizontal = DSTheme.spacing.xl),
+        text = "Seen on these episodes", //TODO: Extract to resource
+        style = MaterialTheme.typography.bodyLarge
+    )
+    DSSpacer(
+        spacing = DSTheme.spacing.medium,
+        type = SpacerType.VERTICAL
+    )
+    LazyRow(
+        contentPadding = PaddingValues(horizontal = DSTheme.spacing.xl),
+        horizontalArrangement = Arrangement.spacedBy(DSTheme.spacing.large)
+    ) {
+        itemsIndexed(episodes) { _, episode ->
+            ElevatedCard(
+                modifier = Modifier.size(200.dp),
+                elevation = CardDefaults.elevatedCardElevation(
+                    defaultElevation = DSTheme.elevations.level5,
+                    pressedElevation = 0.dp,
+                ),
+                colors = CardDefaults.elevatedCardColors(
+                    contentColor = Color.Black
+                )
+            ) {
+                Box {
+                    Image(
+                        modifier = Modifier.fillMaxSize(),
+                        painter = painterResource(R.drawable.rick_and_morty_gray_background),
+                        contentScale = ContentScale.Crop,
+                        contentDescription = null
+                    )
+                    Text(
+                        modifier = Modifier
+                            .padding(DSTheme.spacing.medium)
+                            .align(Alignment.TopStart),
+                        text = "S${episode.season}E${episode.episode}", //TODO: Extract to resources
+                        style = MaterialTheme.typography.headlineSmall
+                    )
+                    Column(
+                        modifier = Modifier
+                            .padding(DSTheme.spacing.medium)
+                            .align(Alignment.BottomStart)
+                    ) {
+                        Text(
+                            text = episode.name,
+                            style = MaterialTheme.typography.headlineSmall,
+                            maxLines = 3,
+                            overflow = TextOverflow.Ellipsis,
+                            textAlign = TextAlign.Start
+                        )
+                        episode.airDate?.let {
+                            Text(
+                                text = formatDate(
+                                    date = it,
+                                    locale = Locale.getDefault()
+                                ),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+                        }
                     }
                 }
             }
         }
     }
+}
+
+//TODO: Extract this to a util fun
+private fun formatDate(date: Date, locale: Locale): String {
+    val formatter = DateTimeFormatter.ofPattern("dd MMM yyyy", locale)
+    val localDate = date.toInstant()
+        .atZone(ZoneId.systemDefault())
+        .toLocalDate()
+    return formatter.format(localDate)
 }
 
 @Composable
@@ -193,7 +273,8 @@ private fun CharacterTopBasicInfoModule(
     characterImage: String,
     characterName: String,
     characterStatus: CharacterStatus,
-    characterSpecies: String
+    characterSpecies: String,
+    navigateBack: () -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -243,5 +324,11 @@ private fun CharacterTopBasicInfoModule(
                 )
             }
         }
+        DSCircularPrimaryIconButton(
+            modifier = Modifier.align(Alignment.TopStart),
+            navigateBack = navigateBack,
+            icon = Icons.AutoMirrored.Filled.ArrowBack,
+            iconDescription = stringResource(R_common.string.go_back_description)
+        )
     }
 }
