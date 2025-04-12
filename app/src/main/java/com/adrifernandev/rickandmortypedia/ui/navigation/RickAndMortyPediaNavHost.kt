@@ -51,7 +51,9 @@ fun RickAndMortyPediaNavHost(
                             NavigationRoutes.CharacterDetail(
                                 characterToJson
                             )
-                        )
+                        ) {
+                            launchSingleTop = true
+                        }
                     }
                 }
             }
