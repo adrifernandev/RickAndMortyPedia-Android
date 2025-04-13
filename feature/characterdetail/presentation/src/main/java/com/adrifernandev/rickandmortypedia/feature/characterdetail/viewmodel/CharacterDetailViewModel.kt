@@ -27,6 +27,7 @@ class CharacterDetailViewModel @Inject constructor(
         val originLocation: Location? = null,
         val lastKnownLocation: Location? = null,
         val isLocationLoading: Boolean = false,
+        val isEpisodesLoading: Boolean = false,
         val episodes: List<Episode>? = null
     )
 
@@ -40,8 +41,7 @@ class CharacterDetailViewModel @Inject constructor(
     fun onEvent(event: UIEvent) {
         when (event) {
             is UIEvent.InitializeCharacter -> {
-                _state.value = _state.value.copy(character = event.character)
-                //TODO: Check if this is a good way to do concurrent calls
+                _state.update { it.copy(character = event.character) }
                 getCharacterOriginAndLastKnownLocations()
                 getCharacterEpisodes()
             }
@@ -50,7 +50,6 @@ class CharacterDetailViewModel @Inject constructor(
 
     private fun getCharacterOriginAndLastKnownLocations() {
         _state.value.character?.let {
-            //TODO: Is this logic well implemented here? Shouldn't it be in the useCase????
             val originLocationId = extractLocationIdFromUrl(it.origin.url)
             val lastKnownLocationId = extractLocationIdFromUrl(it.location.url)
             val listWithIds = listOfNotNull(
@@ -58,10 +57,13 @@ class CharacterDetailViewModel @Inject constructor(
                 lastKnownLocationId
             )
 
+            //TODO: Use withContext to change the Dispatcher properly
             viewModelScope.launch {
-                _state.value = _state.value.copy(
-                    isLocationLoading = true
-                )
+                _state.update { state ->
+                    state.copy(
+                        isLocationLoading = true
+                    )
+                }
                 getLocationsByIdsUseCase.invoke(listWithIds).onSuccess { locations ->
                     val originLocation =
                         locations.find { location -> location.id == originLocationId }
@@ -87,9 +89,11 @@ class CharacterDetailViewModel @Inject constructor(
     private fun getCharacterEpisodes() {
         _state.value.character?.let {
             viewModelScope.launch {
-                _state.value = _state.value.copy(
-                    isLocationLoading = true
-                )
+                _state.update { state ->
+                    state.copy(
+                        isEpisodesLoading = true
+                    )
+                }
                 val episodesIds = extractEpisodesIdsFromCharacter(it)
                 getEpisodesByIdsUseCase.invoke(episodesIds).onSuccess { episodes ->
                     _state.update {
@@ -99,6 +103,11 @@ class CharacterDetailViewModel @Inject constructor(
                     }
                 }.onFailure {
                     //TODO: Handle error
+                }
+                _state.update { state ->
+                    state.copy(
+                        isEpisodesLoading = false
+                    )
                 }
             }
         }
