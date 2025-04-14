@@ -15,4 +15,9 @@ class LocationRemoteDataSourceImpl @Inject constructor(
         apiRequestCall(
             call = { locationService.getLocationsByIds(ids.joinToString(IDS_SEPARATOR)) }
         )
+
+    override suspend fun getLocationById(id: Int): Result<LocationResponse> =
+        apiRequestCall(
+            call = { locationService.getLocationById(id) }
+        )
 }

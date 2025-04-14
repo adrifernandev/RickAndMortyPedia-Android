@@ -9,11 +9,18 @@ interface LocationService {
 
     companion object {
         private const val IDS = "ids"
-        private const val LOCATION_PATH = "location/{$IDS}"
+        private const val ID = "id"
+        private const val LOCATIONS_PATH = "location/{$IDS}"
+        private const val LOCATION_PATH = "location/{$ID}"
     }
 
-    @GET(LOCATION_PATH)
+    @GET(LOCATIONS_PATH)
     suspend fun getLocationsByIds(
         @Path(IDS) ids: String
     ): Response<List<LocationResponse>>
+
+    @GET(LOCATION_PATH)
+    suspend fun getLocationById(
+        @Path(ID) id: Int
+    ): Response<LocationResponse>
 }

@@ -7,4 +7,8 @@ interface LocationRemoteDataSource {
     suspend fun getLocationsByIds(
         ids: List<Int>
     ): Result<List<LocationResponse>>
+
+    suspend fun getLocationById(
+        id: Int
+    ): Result<LocationResponse>
 }
