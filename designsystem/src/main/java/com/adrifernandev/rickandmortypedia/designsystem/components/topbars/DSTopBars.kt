@@ -1,8 +1,8 @@
 package com.adrifernandev.rickandmortypedia.designsystem.components.topbars
 
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
@@ -15,13 +15,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.adrifernandev.rickandmortypedia.designsystem.R
 import com.adrifernandev.rickandmortypedia.designsystem.theme.DSTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DSTextAndLogoTopBar(
-    @StringRes text: Int,
-    @DrawableRes logo: Int
+    @StringRes text: Int
 ) {
     TopAppBar(
         title = {
@@ -29,6 +29,11 @@ fun DSTextAndLogoTopBar(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(DSTheme.spacing.large)
             ) {
+                val logo = if (isSystemInDarkTheme()) {
+                    R.drawable.rick_and_morty_white_logo
+                } else {
+                    R.drawable.rick_and_morty_black_logo
+                }
                 Image(
                     modifier = Modifier.size(32.dp),
                     painter = painterResource(id = logo),

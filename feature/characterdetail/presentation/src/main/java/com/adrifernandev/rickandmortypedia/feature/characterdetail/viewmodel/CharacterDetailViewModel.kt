@@ -10,7 +10,9 @@ import com.adrifernandev.rickandmortypedia.feature.location.domain.model.Locatio
 import com.adrifernandev.rickandmortypedia.feature.location.domain.usecase.GetLocationsByIdsUseCase
 import com.adrifernandev.rickandmortypedia.feature.location.domain.utils.extractLocationIdFromUrl
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -35,8 +37,15 @@ class CharacterDetailViewModel @Inject constructor(
         data class InitializeCharacter(val character: Character) : UIEvent()
     }
 
+    sealed class UIAction {
+        data object ShowObtainingDataError : UIAction()
+    }
+
     private val _state: MutableStateFlow<UIState> = MutableStateFlow(UIState())
     val state = _state.asStateFlow()
+
+    private val _uiAction: MutableSharedFlow<UIAction> = MutableSharedFlow()
+    val uiAction = _uiAction.asSharedFlow()
 
     fun onEvent(event: UIEvent) {
         when (event) {
@@ -77,7 +86,7 @@ class CharacterDetailViewModel @Inject constructor(
                         )
                     }
                 }.onFailure {
-                    //TODO: Handle error
+                    _uiAction.emit(UIAction.ShowObtainingDataError)
                 }
             }
             _state.update { state ->
@@ -101,9 +110,8 @@ class CharacterDetailViewModel @Inject constructor(
                             episodes = episodes
                         )
                     }
-                }.onFailure { exception ->
-                    println(exception.message)
-                    //TODO: Handle error
+                }.onFailure {
+                    _uiAction.emit(UIAction.ShowObtainingDataError)
                 }
                 _state.update { state ->
                     state.copy(

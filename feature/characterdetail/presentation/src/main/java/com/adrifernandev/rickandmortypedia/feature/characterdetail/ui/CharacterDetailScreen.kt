@@ -21,9 +21,12 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,6 +39,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.adrifernandev.rickandmortypedia.common.presentation.ui.dates.DatesFormatter.formatDateToString
+import com.adrifernandev.rickandmortypedia.common.presentation.ui.events.ObserveAsEvents
 import com.adrifernandev.rickandmortypedia.designsystem.components.icons.DSCircularPrimaryIconButton
 import com.adrifernandev.rickandmortypedia.designsystem.components.image.DSAsyncImage
 import com.adrifernandev.rickandmortypedia.designsystem.components.image.DSVerticalGradient
@@ -47,6 +51,8 @@ import com.adrifernandev.rickandmortypedia.feature.character.domain.model.Charac
 import com.adrifernandev.rickandmortypedia.feature.character.presentation.ui.components.CharacterStatusIndicatorComponent
 import com.adrifernandev.rickandmortypedia.feature.characterdetail.presentation.R
 import com.adrifernandev.rickandmortypedia.feature.characterdetail.viewmodel.CharacterDetailViewModel
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.launch
 import com.adrifernandev.rickandmortypedia.common.presentation.R as R_common
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -54,9 +60,15 @@ import com.adrifernandev.rickandmortypedia.common.presentation.R as R_common
 fun CharacterDetailScreen(
     modifier: Modifier = Modifier,
     viewModel: CharacterDetailViewModel,
+    snackbarHostState: SnackbarHostState,
     navigateBack: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    ProcessActions(
+        uiAction = viewModel.uiAction,
+        snackbarHostState = snackbarHostState
+    )
 
     CharacterDetailContent(
         modifier = modifier,
@@ -321,5 +333,27 @@ private fun CharacterTopBasicInfoModule(
             icon = Icons.AutoMirrored.Filled.ArrowBack,
             iconDescription = stringResource(R_common.string.go_back_description)
         )
+    }
+}
+
+@Composable
+private fun ProcessActions(
+    uiAction: SharedFlow<CharacterDetailViewModel.UIAction>,
+    snackbarHostState: SnackbarHostState
+) {
+    val coroutineScope = rememberCoroutineScope()
+    val errorMessage = stringResource(R_common.string.generic_error_message)
+    ObserveAsEvents(uiAction) { action ->
+        when (action) {
+            is CharacterDetailViewModel.UIAction.ShowObtainingDataError -> {
+                coroutineScope.launch {
+                    snackbarHostState.showSnackbar(
+                        message = errorMessage,
+                        withDismissAction = true,
+                        duration = SnackbarDuration.Short
+                    )
+                }
+            }
+        }
     }
 }
