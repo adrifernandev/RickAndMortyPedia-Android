@@ -1,5 +1,6 @@
 package com.adrifernandev.rickandmortypedia.feature.home.presentation.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,39 +16,58 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.adrifernandev.rickandmortypedia.common.presentation.ui.events.ObserveAsEvents
 import com.adrifernandev.rickandmortypedia.common.presentation.ui.previews.PhonePreviews
 import com.adrifernandev.rickandmortypedia.designsystem.components.image.DSAsyncImage
 import com.adrifernandev.rickandmortypedia.designsystem.components.image.DSVerticalGradient
 import com.adrifernandev.rickandmortypedia.designsystem.theme.DSTheme
+import com.adrifernandev.rickandmortypedia.feature.character.domain.model.Character
+import com.adrifernandev.rickandmortypedia.feature.character.presentation.ui.components.CharacterStatusIndicatorComponent
 import com.adrifernandev.rickandmortypedia.feature.home.presentation.R
-import com.adrifernandev.rickandmortypedia.feature.home.presentation.ui.components.CharacterStatusIndicatorComponent
 import com.adrifernandev.rickandmortypedia.feature.home.presentation.viewmodel.HomeViewModel
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.launch
+import com.adrifernandev.rickandmortypedia.common.presentation.R as R_common
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel
+    viewModel: HomeViewModel,
+    snackbarHostState: SnackbarHostState,
+    onCharacterItemClicked: (Character) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    ProcessActions(
+        uiAction = viewModel.uiAction,
+        snackbarHostState = snackbarHostState
+    )
+
     HomeContent(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize(),
         state = state,
         loadNextCharacterPage = {
             viewModel.onEvent(HomeViewModel.UIEvent.LoadNextCharacterPage)
-        }
+        },
+        onCharacterItemClicked = onCharacterItemClicked
     )
 }
 
@@ -55,7 +75,8 @@ fun HomeScreen(
 private fun HomeContent(
     modifier: Modifier = Modifier,
     state: HomeViewModel.UIState,
-    loadNextCharacterPage: () -> Unit
+    loadNextCharacterPage: () -> Unit,
+    onCharacterItemClicked: (Character) -> Unit
 ) {
     val gridState = rememberLazyGridState()
 
@@ -71,7 +92,15 @@ private fun HomeContent(
             ElevatedCard(
                 modifier = Modifier
                     .height(180.dp)
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .clickable(
+                        role = Role.Button,
+                        onClickLabel = stringResource(
+                            id = R.string.character_detail_click_description,
+                            character.name
+                        ),
+                        onClick = { onCharacterItemClicked(character) },
+                    ),
                 elevation = CardDefaults.elevatedCardElevation(
                     defaultElevation = DSTheme.elevations.level3,
                     pressedElevation = 0.dp
@@ -82,7 +111,7 @@ private fun HomeContent(
                         modifier = Modifier.fillMaxSize(),
                         imageUrl = character.image,
                         contentDescription = stringResource(
-                            id = R.string.avatar_image_description,
+                            id = R_common.string.avatar_image_description,
                             character.name
                         )
                     )
@@ -119,14 +148,36 @@ private fun HomeContent(
     }
 }
 
+@Composable
+private fun ProcessActions(
+    uiAction: SharedFlow<HomeViewModel.UIAction>,
+    snackbarHostState: SnackbarHostState
+) {
+    val coroutineScope = rememberCoroutineScope()
+    val errorMessage = stringResource(R_common.string.generic_error_message)
+    ObserveAsEvents(uiAction) { action ->
+        when (action) {
+            is HomeViewModel.UIAction.ShowError -> {
+                coroutineScope.launch {
+                    snackbarHostState.showSnackbar(
+                        message = errorMessage,
+                        withDismissAction = true,
+                        duration = SnackbarDuration.Short
+                    )
+                }
+            }
+        }
+    }
+}
+
 @PhonePreviews
 @Composable
 private fun HomeContentPreview() {
     DSTheme {
         HomeContent(
-            state = HomeViewModel.UIState()
-        ) {
-
-        }
+            state = HomeViewModel.UIState(),
+            onCharacterItemClicked = {},
+            loadNextCharacterPage = {}
+        )
     }
 }

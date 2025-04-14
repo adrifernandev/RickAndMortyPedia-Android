@@ -6,7 +6,9 @@ import com.adrifernandev.rickandmortypedia.feature.character.domain.model.Charac
 import com.adrifernandev.rickandmortypedia.feature.character.domain.model.InfoModel
 import com.adrifernandev.rickandmortypedia.feature.character.domain.usecase.GetPaginatedCharactersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -31,9 +33,17 @@ class HomeViewModel @Inject constructor(
         data object LoadNextCharacterPage : UIEvent()
     }
 
+    sealed class UIAction {
+        data object ShowError : UIAction()
+    }
+
     private val _state: MutableStateFlow<UIState> =
         MutableStateFlow(UIState())
     val state = _state.asStateFlow()
+
+    private val _uiAction: MutableSharedFlow<UIAction> =
+        MutableSharedFlow()
+    val uiAction = _uiAction.asSharedFlow()
 
     init {
         getCharacters(FIRST_PAGE_LOAD_CHARACTERS)
@@ -49,17 +59,15 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             setLoading(true)
             getPaginatedCharactersUseCase.invoke(page)
-                .collect { result ->
-                    result.onSuccess { pagedCharacters ->
-                        _state.value = _state.value.copy(
-                            charactersInfo = pagedCharacters?.info,
-                            charactersList = _state.value.charactersList + (pagedCharacters?.results
-                                ?: emptyList()),
-                            currentCharacterPage = page,
-                        )
-                    }.onFailure {
-                        //TODO: Handle error
-                    }
+                .onSuccess { result ->
+                    _state.value = _state.value.copy(
+                        charactersInfo = result?.info,
+                        charactersList = _state.value.charactersList + (result?.results
+                            ?: emptyList()),
+                        currentCharacterPage = page,
+                    )
+                }.onFailure {
+                    _uiAction.emit(UIAction.ShowError)
                 }
             setLoading(false)
         }

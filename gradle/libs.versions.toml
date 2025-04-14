@@ -28,6 +28,7 @@ kover = "0.9.1"
 retrofit = "2.11.0"
 runtimeAndroid = "1.7.8"
 coilCompose = "3.1.0"
+appcompat = "1.7.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -74,6 +75,7 @@ com-squareup-retrofit2-converter-gson = { module = "com.squareup.retrofit2:conve
 
 io-coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
 io-coil-network = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilCompose" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -110,7 +112,8 @@ layer-domain = [
     "androidx-core-ktx",
     "com-google-dagger-hilt-android",
     "androidx-compose-bom",
-    "androidx-runtime-android"
+    "androidx-runtime-android",
+    "kotlinx-serialization-json"
 ]
 
 layer-data = [

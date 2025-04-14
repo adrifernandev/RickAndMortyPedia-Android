@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="avatar_image_description">%1s Avatar</string>
+    <string name="character_detail_click_description">Go to detail information of character %1s</string>
 </resources>

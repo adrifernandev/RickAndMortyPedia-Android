@@ -38,7 +38,7 @@ fun CharacterItemResponse.toDomainModel(): Character {
         origin = origin.toDomainModel(),
         location = location.toDomainModel(),
         image = image,
-        episode = episode,
+        episodes = episodes,
         url = url
     )
 }

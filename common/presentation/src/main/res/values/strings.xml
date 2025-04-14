@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="avatar_image_description">%1s Avatar</string>
+    <string name="go_back_description">Go back</string>
+    <string name="app_name">RickAndMortyPedia</string>
+    <string name="generic_error_message">An error has occurred, try again later.</string>
+</resources>

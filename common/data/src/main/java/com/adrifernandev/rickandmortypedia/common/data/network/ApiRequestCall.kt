@@ -5,22 +5,18 @@ import com.adrifernandev.rickandmortypedia.common.fundaments.exceptions.HTTPExce
 import com.adrifernandev.rickandmortypedia.common.fundaments.exceptions.HttpStatusCodes
 import com.adrifernandev.rickandmortypedia.common.fundaments.exceptions.NoInternetException
 import com.adrifernandev.rickandmortypedia.common.fundaments.exceptions.UnknownErrorException
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import retrofit2.Response
 import java.io.IOException
 import retrofit2.HttpException as RetrofitHttpException
 
-fun <T> apiRequestFlow(
+suspend fun <T> apiRequestCall(
     call: suspend () -> Response<T>,
-): Flow<Result<T>> = flow {
-    try {
+): Result<T> {
+    return try {
         val response = call.invoke()
 
         if (response.isSuccessful) {
-            emit(Result.success(response.body()!!))
+            Result.success(response.body()!!)
         } else {
             throw RetrofitHttpException(response)
         }
@@ -102,6 +98,6 @@ fun <T> apiRequestFlow(
                 Result.failure(UnknownErrorException("Unknown error"))
             }
         }
-        emit(errorResult)
+        errorResult
     }
-}.flowOn(Dispatchers.IO)
+}

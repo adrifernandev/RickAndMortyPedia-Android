@@ -7,5 +7,4 @@ import javax.inject.Inject
 class CharacterFactory @Inject constructor(
     override val localDataStore: CharacterRemoteDataSource,
     override val remoteDataStore: CharacterRemoteDataSource
-) : DataFactory<CharacterRemoteDataSource, CharacterRemoteDataSource> {
-}
+) : DataFactory<CharacterRemoteDataSource, CharacterRemoteDataSource>

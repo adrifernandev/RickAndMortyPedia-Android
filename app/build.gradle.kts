@@ -4,7 +4,14 @@ import com.adrifernandev.rickandmortypedia.buildsrc.Modules.COMMON_FUNDAMENTS
 import com.adrifernandev.rickandmortypedia.buildsrc.Modules.COMMON_PRESENTATION
 import com.adrifernandev.rickandmortypedia.buildsrc.Modules.DESIGN_SYSTEM
 import com.adrifernandev.rickandmortypedia.buildsrc.Modules.FEATURE_CHARACTER_DATA
+import com.adrifernandev.rickandmortypedia.buildsrc.Modules.FEATURE_CHARACTER_DETAIL_PRESENTATION
+import com.adrifernandev.rickandmortypedia.buildsrc.Modules.FEATURE_CHARACTER_DOMAIN
+import com.adrifernandev.rickandmortypedia.buildsrc.Modules.FEATURE_CHARACTER_PRESENTATION
+import com.adrifernandev.rickandmortypedia.buildsrc.Modules.FEATURE_EPISODE_DATA
+import com.adrifernandev.rickandmortypedia.buildsrc.Modules.FEATURE_EPISODE_DOMAIN
 import com.adrifernandev.rickandmortypedia.buildsrc.Modules.FEATURE_HOME_PRESENTATION
+import com.adrifernandev.rickandmortypedia.buildsrc.Modules.FEATURE_LOCATION_DATA
+import com.adrifernandev.rickandmortypedia.buildsrc.Modules.FEATURE_LOCATION_DOMAIN
 import com.adrifernandev.rickandmortypedia.buildsrc.Versions
 
 plugins {
@@ -112,9 +119,16 @@ dependencies {
     implementation(project(DESIGN_SYSTEM))
     implementation(project(COMMON_PRESENTATION))
     implementation(project(FEATURE_HOME_PRESENTATION))
+    implementation(project(FEATURE_CHARACTER_DOMAIN))
     implementation(project(FEATURE_CHARACTER_DATA))
     implementation(project(COMMON_DATA))
     implementation(project(COMMON_FUNDAMENTS))
+    implementation(project(FEATURE_CHARACTER_DETAIL_PRESENTATION))
+    implementation(project(FEATURE_CHARACTER_PRESENTATION))
+    implementation(project(FEATURE_LOCATION_DOMAIN))
+    implementation(project(FEATURE_LOCATION_DATA))
+    implementation(project(FEATURE_EPISODE_DOMAIN))
+    implementation(project(FEATURE_EPISODE_DATA))
 
     // [DI Module implementation needed] //
     implementation(project(COMMON_DI))
@@ -127,4 +141,11 @@ dependencies {
     kover(project(COMMON_DATA))
     kover(project(COMMON_DI))
     kover(project(COMMON_FUNDAMENTS))
+    kover(project(FEATURE_CHARACTER_DETAIL_PRESENTATION))
+    kover(project(FEATURE_CHARACTER_DOMAIN))
+    kover(project(FEATURE_CHARACTER_PRESENTATION))
+    kover(project(FEATURE_LOCATION_DOMAIN))
+    kover(project(FEATURE_LOCATION_DATA))
+    kover(project(FEATURE_EPISODE_DOMAIN))
+    kover(project(FEATURE_EPISODE_DATA))
 }
