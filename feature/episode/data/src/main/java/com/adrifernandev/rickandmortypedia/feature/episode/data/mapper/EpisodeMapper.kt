@@ -10,7 +10,7 @@ fun List<EpisodeResponse>.toDomain() = map {
     it.toDomain()
 }
 
-private fun EpisodeResponse.toDomain() = Episode(
+fun EpisodeResponse.toDomain() = Episode(
     id = id,
     name = name,
     airDate = parseAirDateToDate(airDate),

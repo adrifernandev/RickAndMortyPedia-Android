@@ -11,9 +11,13 @@ class EpisodeRepositoryImpl @Inject constructor(
 ) : EpisodeRepository {
 
     override suspend fun getEpisodesById(ids: List<Int>): Result<List<Episode>> {
-        return episodeFactory.remoteDataStore.getEpisodesByIds(ids)
-            .mapCatching { response ->
-                response.toDomain()
+        return if (ids.size == 1) {
+            episodeFactory.remoteDataStore.getEpisodeById(ids.first())
+                .mapCatching { listOf(it.toDomain()) }
+        } else {
+            episodeFactory.remoteDataStore.getEpisodesByIds(ids).mapCatching { response ->
+                response.map { it.toDomain() }
             }
+        }
     }
 }

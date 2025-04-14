@@ -101,7 +101,8 @@ class CharacterDetailViewModel @Inject constructor(
                             episodes = episodes
                         )
                     }
-                }.onFailure {
+                }.onFailure { exception ->
+                    println(exception.message)
                     //TODO: Handle error
                 }
                 _state.update { state ->
