@@ -11,12 +11,8 @@ class LocationRepositoryImpl @Inject constructor(
 ) : LocationRepository {
 
     override suspend fun getLocationsById(ids: List<Int>): Result<List<Location>> {
-        return if (ids.size == 1) {
-            locationFactory.remoteDataStore.getLocationById(ids.first())
-                .map { listOf(it.toDomainModel()) }
-        } else {
-            locationFactory.remoteDataStore.getLocationsByIds(ids)
-                .map { it.map { locationResponse -> locationResponse.toDomainModel() } }
+        return locationFactory.remoteDataStore.getLocationsByIds(ids).mapCatching { response ->
+            response.map { it.toDomainModel() }
         }
     }
 }

@@ -12,12 +12,19 @@ class LocationRemoteDataSourceImpl @Inject constructor(
 ) : LocationRemoteDataSource {
 
     override suspend fun getLocationsByIds(ids: List<Int>): Result<List<LocationResponse>> =
-        apiRequestCall(
-            call = { locationService.getLocationsByIds(ids.joinToString(IDS_SEPARATOR)) }
-        )
+        if (ids.size == 1) {
+            getSingleLocationById(ids.first()).map { listOf(it) }
+        } else {
+            getMultipleLocationsByIds(ids)
+        }
 
-    override suspend fun getLocationById(id: Int): Result<LocationResponse> =
+    private suspend fun getSingleLocationById(id: Int): Result<LocationResponse> =
         apiRequestCall(
             call = { locationService.getLocationById(id) }
+        )
+
+    private suspend fun getMultipleLocationsByIds(ids: List<Int>): Result<List<LocationResponse>> =
+        apiRequestCall(
+            call = { locationService.getLocationsByIds(ids.joinToString(IDS_SEPARATOR)) }
         )
 }

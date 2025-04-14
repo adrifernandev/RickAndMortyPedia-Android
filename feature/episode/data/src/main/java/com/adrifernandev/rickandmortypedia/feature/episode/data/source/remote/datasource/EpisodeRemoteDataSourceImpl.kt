@@ -12,8 +12,15 @@ class EpisodeRemoteDataSourceImpl @Inject constructor(
 ) : EpisodeRemoteDataSource {
 
     override suspend fun getEpisodesByIds(ids: List<Int>): Result<List<EpisodeResponse>> =
-        apiRequestCall { episodeService.getEpisodesById(ids.joinToString(IDS_SEPARATOR)) }
+        if (ids.size == 1) {
+            getSingleEpisodeById(ids.first()).map { listOf(it) }
+        } else {
+            getMultipleEpisodesById(ids)
+        }
 
-    override suspend fun getEpisodeById(id: Int): Result<EpisodeResponse> =
+    private suspend fun getSingleEpisodeById(id: Int): Result<EpisodeResponse> =
         apiRequestCall { episodeService.getEpisodeById(id) }
+
+    private suspend fun getMultipleEpisodesById(ids: List<Int>): Result<List<EpisodeResponse>> =
+        apiRequestCall { episodeService.getEpisodesById(ids.joinToString(IDS_SEPARATOR)) }
 }

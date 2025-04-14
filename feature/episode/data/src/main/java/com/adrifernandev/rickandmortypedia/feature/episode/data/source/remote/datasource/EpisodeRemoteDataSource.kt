@@ -5,5 +5,4 @@ import com.adrifernandev.rickandmortypedia.feature.episode.data.source.remote.en
 interface EpisodeRemoteDataSource {
 
     suspend fun getEpisodesByIds(ids: List<Int>): Result<List<EpisodeResponse>>
-    suspend fun getEpisodeById(id: Int): Result<EpisodeResponse>
 }
